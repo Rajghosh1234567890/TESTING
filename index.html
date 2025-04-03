@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your SMM Expert - Premium Social Media Marketing Services</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* [Previous CSS styles remain exactly the same] */
+        /* Keep all your existing CSS styles */
+    </style>
+</head>
+<body>
+    <!-- [All your existing HTML content remains the same until before the closing </body> tag] -->
+    <!-- Keep all your existing HTML content -->
+
+    <!-- Add this script at the end, just before </body> -->
+    <script>
+        // API Base URL - Change this to your backend URL in production
+        const API_BASE_URL = 'http://localhost:3001/api';
+        
+        // DOM Elements
+        const loginBtn = document.getElementById('loginBtn');
+        const signupBtn = document.getElementById('signupBtn');
+        const authButtons = document.querySelector('.auth-buttons');
+        
+        // Auth Modal HTML
+        const authModalHTML = `
+            <div class="auth-modal" id="authModal" style="display: none;">
+                <div class="auth-modal-content">
+                    <h2 id="authModalTitle">Login</h2>
+                    <form id="authForm" class="auth-form">
+                        <div id="nameField" style="display: none;">
+                            <input type="text" id="name" placeholder="Full Name" required>
+                        </div>
+                        <input type="email" id="email" placeholder="Email" required>
+                        <input type="password" id="password" placeholder="Password" required>
+                        <div class="auth-modal-buttons">
+                            <button type="submit" class="btn" id="authSubmitBtn">Login</button>
+                            <button type="button" class="btn btn-outline" id="authToggleBtn">Switch to Register</button>
+                        </div>
+                        <p class="forgot-password" id="forgotPassword">Forgot Password?</p>
+                    </form>
+                </div>
+            </div>
+        `;
+        
+        // Insert modal into DOM
+        document.body.insertAdjacentHTML('beforeend', authModalHTML);
+        
+        // DOM Elements after modal insertion
+        const authModal = document.getElementById('authModal');
+        const authModalTitle = document.getElementById('authModalTitle');
+        const authForm = document.getElementById('authForm');
+        const authSubmitBtn = document.getElementById('authSubmitBtn');
+        const authToggleBtn = document.getElementById('authToggleBtn');
+        const nameField = document.getElementById('nameField');
+        const forgotPassword = document.getElementById('forgotPassword');
+        
+        let isLoginMode = true;
+        
+        // Toggle between login and register
+        authToggleBtn.addEventListener('click', () => {
+            isLoginMode = !isLoginMode;
+            
+            if (isLoginMode) {
+                authModalTitle.textContent = 'Login';
+                authSubmitBtn.textContent = 'Login';
+                authToggleBtn.textContent = 'Switch to Register';
+                nameField.style.display = 'none';
+            } else {
+                authModalTitle.textContent = 'Register';
+                authSubmitBtn.textContent = 'Register';
+                authToggleBtn.textContent = 'Switch to Login';
+                nameField.style.display = 'block';
+            }
+        });
+        
+        // Show modal
+        function showAuthModal() {
+            authModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Hide modal
+        function hideAuthModal() {
+            authModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Login/Register button clicks
+        loginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            isLoginMode = true;
+            authModalTitle.textContent = 'Login';
+            authSubmitBtn.textContent = 'Login';
+            authToggleBtn.textContent = 'Switch to Register';
+            nameField.style.display = 'none';
+            showAuthModal();
+        });
+        
+        signupBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            isLoginMode = false;
+            authModalTitle.textContent = 'Register';
+            authSubmitBtn.textContent = 'Register';
+            authToggleBtn.textContent = 'Switch to Login';
+            nameField.style.display = 'block';
+            showAuthModal();
+        });
+        
+        // Close modal when clicking outside
+        authModal.addEventListener('click', (e) => {
+            if (e.target === authModal) {
+                hideAuthModal();
+            }
+        });
+        
+        // Form submission
+        authForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const name = isLoginMode ? null : document.getElementById('name').value;
+            
+            try {
+                const url = isLoginMode ? `${API_BASE_URL}/login` : `${API_BASE_URL}/register`;
+                const data = isLoginMode ? { email, password } : { name, email, password };
+                
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (!result.success) {
+                    throw new Error(result.message);
+                }
+                
+                // Save token and update UI
+                localStorage.setItem('smm_token', result.token);
+                updateAuthUI(result.user);
+                hideAuthModal();
+                
+                alert(isLoginMode ? 'Login successful!' : 'Registration successful!');
+            } catch (error) {
+                alert(`Error: ${error.message}`);
+            }
+        });
+        
+        // Update UI based on auth status
+        function updateAuthUI(user) {
+            if (user) {
+                authButtons.innerHTML = `
+                    <span class="user-email">${user.email}</span>
+                    <a href="#" class="btn btn-outline" id="logoutBtn">Logout</a>
+                `;
+                
+                document.getElementById('logoutBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    localStorage.removeItem('smm_token');
+                    updateAuthUI(null);
+                });
+            } else {
+                authButtons.innerHTML = `
+                    <a href="#" class="btn btn-outline" id="loginBtn">Login</a>
+                    <a href="#" class="btn" id="signupBtn">Sign Up</a>
+                `;
+                
+                // Reattach event listeners
+                document.getElementById('loginBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    isLoginMode = true;
+                    showAuthModal();
+                });
+                
+                document.getElementById('signupBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    isLoginMode = false;
+                    showAuthModal();
+                });
+            }
+        }
+        
+        // Check auth status on page load
+        async function checkAuthStatus() {
+            const token = localStorage.getItem('smm_token');
+            
+            if (token) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/profile`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        updateAuthUI(result.user);
+                    } else {
+                        throw new Error(result.message);
+                    }
+                } catch (error) {
+                    localStorage.removeItem('smm_token');
+                    updateAuthUI(null);
+                }
+            } else {
+                updateAuthUI(null);
+            }
+        }
+        
+        // Initialize
+        checkAuthStatus();
+        
+        // Order button functionality
+        document.addEventListener('click', async (e) => {
+            if (e.target.classList.contains('btn-whatsapp')) {
+                const token = localStorage.getItem('smm_token');
+                
+                if (!token) {
+                    e.preventDefault();
+                    const proceed = confirm('You need to login first. Would you like to login now?');
+                    if (proceed) {
+                        loginBtn.click();
+                    }
+                } else {
+                    // If logged in, create an order record
+                    try {
+                        const packageCard = e.target.closest('.package-card');
+                        const packageName = packageCard.querySelector('.package-header h3').textContent;
+                        const packagePrice = packageCard.querySelector('.discounted-price').textContent;
+                        const serviceType = document.querySelector('.tab-btn.active').dataset.tab;
+                        
+                        const response = await fetch(`${API_BASE_URL}/orders`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
+                            body: JSON.stringify({
+                                serviceType,
+                                packageName,
+                                price: parseInt(packagePrice.replace(/[^0-9]/g, '')),
+                                details: {
+                                    link: prompt('Please enter your profile/video link:')
+                                }
+                            })
+                        });
+                        
+                        const result = await response.json();
+                        
+                        if (result.success) {
+                            alert('Order placed successfully! Our team will contact you shortly.');
+                        } else {
+                            throw new Error(result.message);
+                        }
+                    } catch (error) {
+                        alert(`Error: ${error.message}`);
+                    }
+                }
+            }
+        });
+
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        let darkMode = localStorage.getItem('darkMode');
+        
+        // Check if dark mode is enabled
+        if (darkMode === 'enabled') {
+            body.setAttribute('data-theme', 'dark');
+            darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+        
+        // Toggle dark mode
+        darkModeToggle.addEventListener('click', () => {
+            darkMode = localStorage.getItem('darkMode');
+            
+            if (darkMode !== 'enabled') {
+                body.setAttribute('data-theme', 'dark');
+                darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                body.removeAttribute('data-theme');
+                darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('darkMode', null);
+            }
+        });
+        
+        // Tab functionality
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const youtubePackages = document.querySelector('.youtube-packages');
+        const instagramPackages = document.querySelector('.instagram-packages');
+        
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                tabBtns.forEach(b => b.classList.remove('active'));
+                
+                // Add active class to clicked button
+                btn.classList.add('active');
+                
+                // Show corresponding packages
+                if (btn.dataset.tab === 'youtube') {
+                    youtubePackages.style.display = 'block';
+                    instagramPackages.style.display = 'none';
+                } else {
+                    youtubePackages.style.display = 'none';
+                    instagramPackages.style.display = 'block';
+                }
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Sticky tabs
+        window.addEventListener('scroll', () => {
+            const tabs = document.querySelector('.services-tabs');
+            const header = document.querySelector('header');
+            const headerHeight = header.offsetHeight;
+            
+            if (window.scrollY > headerHeight) {
+                tabs.style.top = '0';
+            } else {
+                tabs.style.top = headerHeight + 'px';
+            }
+        });
+    </script>
+</body>
+</html>
