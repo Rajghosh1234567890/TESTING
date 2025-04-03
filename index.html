@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your SMM Expert - Premium Social Media Marketing Services</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/currency.js@2.0.4/dist/currency.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         /* Global Styles */
         :root {
@@ -19,6 +18,7 @@
             --gray: #7f8c8d;
             --dark-gray: #2c3e50;
             --premium-gray: #34495e;
+            --telegram: #0088cc;
         }
         
         [data-theme="dark"] {
@@ -43,6 +43,31 @@
             line-height: 1.6;
             position: relative;
             overflow-x: hidden;
+        }
+        
+        /* Snow Effect */
+        .snow {
+            position: fixed;
+            top: -10px;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        
+        .snowflake {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: fall linear infinite;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
         }
         
         @keyframes slideIn {
@@ -94,11 +119,11 @@
         }
         
         .btn-telegram {
-            background: #0088cc;
+            background: var(--telegram);
         }
         
         .btn-telegram:hover {
-            background: #006699;
+            background: #0077b5;
         }
         
         .btn-outline {
@@ -179,6 +204,53 @@
             animation: pulse 1.5s infinite;
         }
         
+        /* Currency Selector */
+        .currency-selector {
+            position: fixed;
+            top: 120px;
+            right: 20px;
+            z-index: 1001;
+            background: var(--primary);
+            border: none;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            color: var(--text);
+            font-size: 1.2rem;
+        }
+        
+        .currency-dropdown {
+            position: absolute;
+            top: 90px;
+            right: 0;
+            background: var(--secondary);
+            border-radius: 5px;
+            padding: 10px;
+            width: 200px;
+            display: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .currency-dropdown.show {
+            display: block;
+        }
+        
+        .currency-option {
+            padding: 8px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        
+        .currency-option:hover {
+            background: var(--accent);
+            color: white;
+        }
+        
         /* Header Styles */
         header {
             background-color: var(--primary);
@@ -245,7 +317,7 @@
             transition: all 0.3s ease;
         }
         
-        .auth-modal.active {
+        .auth-modal.show {
             opacity: 1;
             visibility: visible;
         }
@@ -257,24 +329,22 @@
             width: 90%;
             max-width: 400px;
             box-shadow: 0 5px 30px rgba(0,0,0,0.3);
-            position: relative;
             transform: translateY(-20px);
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease;
+            position: relative;
         }
         
-        .auth-modal.active .auth-modal-content {
+        .auth-modal.show .auth-modal-content {
             transform: translateY(0);
         }
         
         .close-modal {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: var(--text);
+            top: 15px;
+            right: 15px;
             font-size: 1.5rem;
             cursor: pointer;
+            color: var(--text);
         }
         
         .auth-modal h2 {
@@ -321,18 +391,77 @@
             font-size: 0.9rem;
         }
         
-        .form-message {
-            text-align: center;
-            margin-top: 10px;
-            font-size: 0.9rem;
-        }
-        
-        .success {
-            color: #2ecc71;
-        }
-        
-        .error {
+        .auth-error {
             color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        /* Payment Modal */
+        .payment-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .payment-modal-content {
+            background: var(--premium-gray);
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        
+        .payment-modal.show .payment-modal-content {
+            transform: translateY(0);
+        }
+        
+        .payment-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .payment-option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: var(--secondary);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-option:hover {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .payment-option i {
+            font-size: 1.5rem;
+            margin-right: 15px;
         }
         
         /* Hero Section */
@@ -732,7 +861,7 @@
             right: 30px;
             width: 60px;
             height: 60px;
-            background: #0088cc;
+            background: var(--telegram);
             color: white;
             border-radius: 50%;
             display: flex;
@@ -741,66 +870,14 @@
             font-size: 30px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             z-index: 1000;
-            animation: pulse 2s infinite 0.5s;
+            animation: pulse 2s infinite;
             transition: all 0.3s ease;
         }
 
         .float-telegram:hover {
-            background: #006699;
+            background: #0077b5;
             transform: scale(1.1);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-        }
-        
-        /* Currency Selector */
-        .currency-selector {
-            position: fixed;
-            top: 120px;
-            right: 20px;
-            z-index: 1001;
-            background: var(--primary);
-            border-radius: 5px;
-            padding: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
-        
-        .currency-selector select {
-            background: var(--secondary);
-            color: var(--text);
-            border: 1px solid var(--accent);
-            padding: 8px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        
-        /* Snow Effect */
-        .snow {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1002;
-        }
-        
-        /* Admin Panel Button */
-        .admin-panel-btn {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            background: var(--accent);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            display: none;
-        }
-        
-        .admin-panel-btn:hover {
-            background: #2980b9;
         }
         
         /* Responsive Styles */
@@ -852,12 +929,16 @@
                 top: 140px;
             }
             
-            .dark-mode-toggle {
+            .dark-mode-toggle, .currency-selector {
                 top: 15px;
                 right: 15px;
                 width: 40px;
                 height: 40px;
                 font-size: 1rem;
+            }
+            
+            .currency-selector {
+                top: 70px;
             }
             
             .float-whatsapp, .float-telegram {
@@ -870,11 +951,6 @@
             
             .float-telegram {
                 bottom: 85px;
-            }
-            
-            .currency-selector {
-                top: 100px;
-                right: 15px;
             }
         }
         
@@ -918,39 +994,35 @@
     <a href="https://wa.me/917029615248" class="float-whatsapp" target="_blank">
         <i class="fab fa-whatsapp"></i>
     </a>
-
+    
     <!-- Floating Telegram Button -->
     <a href="https://t.me/917029615248" class="float-telegram" target="_blank">
         <i class="fab fa-telegram"></i>
-    </a>
-
-    <!-- Currency Selector -->
-    <div class="currency-selector">
-        <select id="currencySelect">
-            <option value="INR">INR (₹)</option>
-            <option value="USD">USD ($)</option>
-            <option value="EUR">EUR (€)</option>
-            <option value="GBP">GBP (£)</option>
-            <option value="CAD">CAD ($)</option>
-            <option value="AUD">AUD ($)</option>
-            <option value="JPY">JPY (¥)</option>
-            <option value="CNY">CNY (¥)</option>
-            <option value="AED">AED (د.إ)</option>
-            <option value="SGD">SGD ($)</option>
-            <option value="MYR">MYR (RM)</option>
-            <option value="THB">THB (฿)</option>
-        </select>
-    </div>
-
-    <!-- Admin Panel Button (Visible only for admin) -->
-    <a href="#" class="admin-panel-btn" id="adminPanelBtn">
-        <i class="fas fa-cog"></i> Admin Panel
     </a>
 
     <!-- Dark Mode Toggle -->
     <button class="dark-mode-toggle" id="darkModeToggle">
         <i class="fas fa-moon"></i>
     </button>
+    
+    <!-- Currency Selector -->
+    <div class="currency-selector" id="currencySelector">
+        <i class="fas fa-rupee-sign"></i>
+        <div class="currency-dropdown" id="currencyDropdown">
+            <div class="currency-option" data-currency="INR">Indian Rupee (₹)</div>
+            <div class="currency-option" data-currency="USD">US Dollar ($)</div>
+            <div class="currency-option" data-currency="EUR">Euro (€)</div>
+            <div class="currency-option" data-currency="GBP">British Pound (£)</div>
+            <div class="currency-option" data-currency="CAD">Canadian Dollar (C$)</div>
+            <div class="currency-option" data-currency="AUD">Australian Dollar (A$)</div>
+            <div class="currency-option" data-currency="JPY">Japanese Yen (¥)</div>
+            <div class="currency-option" data-currency="CNY">Chinese Yuan (¥)</div>
+            <div class="currency-option" data-currency="AED">UAE Dirham (د.إ)</div>
+            <div class="currency-option" data-currency="SAR">Saudi Riyal (﷼)</div>
+            <div class="currency-option" data-currency="SGD">Singapore Dollar (S$)</div>
+            <div class="currency-option" data-currency="MYR">Malaysian Ringgit (RM)</div>
+        </div>
+    </div>
 
     <!-- Header -->
     <header>
@@ -959,40 +1031,38 @@
                 <img src="https://i.ibb.co/gLD98mbG/logo.png" alt="Your SMM Expert Logo">
                 <h3>Your SMM Expert</h3>
             </a>
-            <div class="auth-buttons" id="authButtons">
+            <div class="auth-buttons">
+                <span id="userEmail" class="user-email" style="display: none;"></span>
                 <a href="#" class="btn btn-outline" id="loginBtn">Login</a>
                 <a href="#" class="btn" id="signupBtn">Sign Up</a>
-            </div>
-            <div class="user-info" id="userInfo" style="display: none;">
-                <span class="user-email" id="userEmail"></span>
-                <a href="#" class="btn btn-outline" id="logoutBtn">Logout</a>
+                <a href="#" class="btn" id="logoutBtn" style="display: none;">Logout</a>
             </div>
         </div>
     </header>
 
-    <!-- Login Modal -->
+    <!-- Auth Modals -->
     <div class="auth-modal" id="loginModal">
         <div class="auth-modal-content">
-            <button class="close-modal" id="closeLoginModal">&times;</button>
+            <span class="close-modal" id="closeLoginModal">&times;</span>
             <h2>Login</h2>
-            <form id="loginForm" class="auth-form">
+            <div class="auth-error" id="loginError"></div>
+            <form class="auth-form" id="loginForm">
                 <input type="email" id="loginEmail" placeholder="Email" required>
                 <input type="password" id="loginPassword" placeholder="Password" required>
                 <div class="auth-modal-buttons">
                     <button type="submit" class="btn">Login</button>
                 </div>
-                <p class="forgot-password" id="forgotPassword">Forgot Password?</p>
-                <p class="form-message" id="loginMessage"></p>
             </form>
+            <p class="forgot-password" id="forgotPassword">Forgot Password?</p>
         </div>
     </div>
 
-    <!-- Signup Modal -->
     <div class="auth-modal" id="signupModal">
         <div class="auth-modal-content">
-            <button class="close-modal" id="closeSignupModal">&times;</button>
+            <span class="close-modal" id="closeSignupModal">&times;</span>
             <h2>Sign Up</h2>
-            <form id="signupForm" class="auth-form">
+            <div class="auth-error" id="signupError"></div>
+            <form class="auth-form" id="signupForm">
                 <input type="text" id="signupName" placeholder="Full Name" required>
                 <input type="email" id="signupEmail" placeholder="Email" required>
                 <input type="password" id="signupPassword" placeholder="Password" required>
@@ -1000,23 +1070,48 @@
                 <div class="auth-modal-buttons">
                     <button type="submit" class="btn">Sign Up</button>
                 </div>
-                <p class="form-message" id="signupMessage"></p>
             </form>
         </div>
     </div>
 
-    <!-- Forgot Password Modal -->
     <div class="auth-modal" id="forgotPasswordModal">
         <div class="auth-modal-content">
-            <button class="close-modal" id="closeForgotPasswordModal">&times;</button>
+            <span class="close-modal" id="closeForgotPasswordModal">&times;</span>
             <h2>Reset Password</h2>
-            <form id="forgotPasswordForm" class="auth-form">
+            <div class="auth-error" id="forgotPasswordError"></div>
+            <form class="auth-form" id="forgotPasswordForm">
                 <input type="email" id="forgotPasswordEmail" placeholder="Email" required>
                 <div class="auth-modal-buttons">
                     <button type="submit" class="btn">Reset Password</button>
                 </div>
-                <p class="form-message" id="forgotPasswordMessage"></p>
             </form>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="payment-modal" id="paymentModal">
+        <div class="payment-modal-content">
+            <span class="close-modal" id="closePaymentModal">&times;</span>
+            <h2>Select Payment Method</h2>
+            <p>Choose your preferred payment method to complete your order.</p>
+            <div class="payment-options">
+                <div class="payment-option" data-method="paypal">
+                    <i class="fab fa-paypal"></i>
+                    <span>PayPal</span>
+                </div>
+                <div class="payment-option" data-method="stripe">
+                    <i class="fab fa-cc-stripe"></i>
+                    <span>Credit/Debit Card</span>
+                </div>
+                <div class="payment-option" data-method="razorpay">
+                    <i class="fas fa-rupee-sign"></i>
+                    <span>Razorpay (India)</span>
+                </div>
+                <div class="payment-option" data-method="crypto">
+                    <i class="fab fa-bitcoin"></i>
+                    <span>Cryptocurrency</span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1035,7 +1130,7 @@
             <div class="tabs-container">
                 <button class="tab-btn active" data-tab="youtube"> 🔴 YouTube Promotion</button>
                 <button class="tab-btn" data-tab="instagram">🚀 Instagram Promotion</button>
-                <button class="tab-btn" data-tab="Facebook"> 🎯 Facebook Promotion</button>
+                <button class="tab-btn" data-tab="facebook"> 🎯 Facebook Promotion</button>
             </div>
         </div>
     </section>
@@ -1063,8 +1158,7 @@
                                 <div class="discounted-price">₹99</div>
                             </div>
                             <div class="package-cta">
-                                <a href="https://wa.me/917029615248?text=Hi%20YourSMM%20Expert,%20I%20want%20to%20order%20the%20Beginners%20Package%20(100%20Subscribers%20+%20100%20Views%20+%20500%20Likes)%20for%20₹99.%20Please%20guide%20me%20how%20to%20proceed." class="btn btn-whatsapp">Order Now</a>
-                                <button class="btn" onclick="showPaymentOptions(99, 'Beginners Package')">Pay Now</button>
+                                <button class="btn btn-whatsapp order-btn" data-package="Beginners Package (100 Subscribers + 100 Views + 500 Likes)" data-price="99">Order Now</button>
                             </div>
                         </div>
                     </div>
@@ -1086,8 +1180,7 @@
                                 <div class="discounted-price">₹999</div>
                             </div>
                             <div class="package-cta">
-                                <a href="https://wa.me/917029615248?text=Hi%20Your%20SMM%20Expert,%20I%20want%20to%20order%20the%201K%20Subscribers%20Package%20(1K%20Subs%20+%202K%20Views%20+%205K%20Likes)%20for%20₹999.%20Please%20guide%20me." class="btn btn-whatsapp">Order Now</a>
-                                <button class="btn" onclick="showPaymentOptions(999, '1K Subscribers Package')">Pay Now</button>
+                                <button class="btn btn-whatsapp order-btn" data-package="1K Subscribers Package (1K Subs + 2K Views + 5K Likes)" data-price="999">Order Now</button>
                             </div>
                         </div>
                     </div>
@@ -1109,8 +1202,7 @@
                                 <div class="discounted-price">₹1999</div>
                             </div>
                             <div class="package-cta">
-                                <a href="https://wa.me/917029615248?text=Hi%20Your%20SMM%20Expert,%20I%20want%20to%20order%20the%205K%20Subscribers%20Package%20(5K%20Subs%20+%202K%20Views%20+%207K%20Likes)%20for%20₹1999.%20Please%20guide%20me." class="btn btn-whatsapp">Order Now</a>
-                                <button class="btn" onclick="showPaymentOptions(1999, '5K Subscribers Package')">Pay Now</button>
+                                <button class="btn btn-whatsapp order-btn" data-package="5K Subscribers Package (5K Subs + 2K Views + 7K Likes)" data-price="1999">Order Now</button>
                             </div>
                         </div>
                     </div>
@@ -1133,8 +1225,7 @@
                                 <div class="discounted-price">₹6999</div>
                             </div>
                             <div class="package-cta">
-                                <a href="https://wa.me/917029615248?text=Hi%20Your%20SMM%20Expert,%20I%20want%20to%20order%20the%2010K%20Subscribers%20Package%20(10K%20Subs%20+%2010K%20Views%20+%201K%20Comments)%20for%20₹6999.%20Please%20guide%20me." class="btn btn-whatsapp">Order Now</a>
-                                <button class="btn" onclick="showPaymentOptions(6999, '10K Subscribers Package')">Pay Now</button>
+                                <button class="btn btn-whatsapp order-btn" data-package="10K Subscribers Package (10K Subs + 10K Views + 1K Comments)" data-price="6999">Order Now</button>
                             </div>
                         </div>
                     </div>
@@ -1155,8 +1246,7 @@
                                 <div class="discounted-price">₹14999</div>
                             </div>
                             <div class="package-cta">
-                                <a href="https://wa.me/917029615248?text=Hi%20Your%20SMM%20Expert,%20I%20want%20to%20order%20the%20Monetization%20Package%20(2K%20Subs%20+%204K%20Watch%20Hours)%20for%20₹14999.%20Please%20guide%20me." class="btn btn-whatsapp">Order Now</a>
-                                <button class="btn" onclick="showPaymentOptions(14999, 'Monetization Package')">Pay Now</button>
+                                <button class="btn btn-whatsapp order-btn" data-package="Monetization Package (2K Subs + 4K Watch Hours)" data-price="14999">Order Now</button>
                             </div>
                         </div>
                     </div>
@@ -1183,8 +1273,7 @@
                                 <div class="discounted-price">₹199</div>
                             </div>
                             <div class="package-cta">
-                                <a href="https://wa.me/917029615248?text=I%20am%20interested%20in%20your%20service.%20How%20to%20buy%20please%20tell%20me." class="btn btn-whatsapp">Order Now</a>
-                                <button class="btn" onclick="showPaymentOptions(199, 'Instagram Beginners Package')">Pay Now</button>
+                                <button class="btn btn-whatsapp order-btn" data-package="Instagram Beginners Package (1K Followers + 10K Views + 1K Likes)" data-price="199">Order Now</button>
                             </div>
                         </div>
                     </div>
@@ -1207,8 +1296,7 @@
                                 <div class="discounted-price">₹1199</div>
                             </div>
                             <div class="package-cta">
-                                <a href="https://wa.me/917029615248?text=I%20am%20interested%20in%20your%20service.%20How%20to%20buy%20please%20tell%20me." class="btn btn-whatsapp">Order Now</a>
-                                <button class="btn" onclick="showPaymentOptions(1199, 'Instagram Intermediate Package')">Pay Now</button>
+                                <button class="btn btn-whatsapp order-btn" data-package="Instagram Intermediate Package (5K Followers + 10K Likes + 50K Views)" data-price="1199">Order Now</button>
                             </div>
                         </div>
                     </div>
@@ -1232,8 +1320,7 @@
                                 <div class="discounted-price">₹4999</div>
                             </div>
                             <div class="package-cta">
-                                <a href="https://wa.me/917029615248?text=I%20am%20interested%20in%20your%20service.%20How%20to%20buy%20please%20tell%20me." class="btn btn-whatsapp">Order Now</a>
-                                <button class="btn" onclick="showPaymentOptions(4999, 'Instagram Brand Building Package')">Pay Now</button>
+                                <button class="btn btn-whatsapp order-btn" data-package="Instagram Brand Building Package (10K Followers + 100K Views + 20K Impressions)" data-price="4999">Order Now</button>
                             </div>
                         </div>
                     </div>
@@ -1258,8 +1345,7 @@
                                 <div class="discounted-price">₹14999</div>
                             </div>
                             <div class="package-cta">
-                                <a href="https://wa.me/917029615248?text=I%20am%20interested%20in%20your%20service.%20How%20to%20buy%20please%20tell%20me." class="btn btn-whatsapp">Order Now</a>
-                                <button class="btn" onclick="showPaymentOptions(14999, 'Instagram Celebrity Package')">Pay Now</button>
+                                <button class="btn btn-whatsapp order-btn" data-package="Instagram Celebrity Package (50K Followers + 1M Views + 500K Impressions)" data-price="14999">Order Now</button>
                             </div>
                         </div>
                     </div>
@@ -1284,8 +1370,107 @@
                                 <div class="discounted-price">₹25000</div>
                             </div>
                             <div class="package-cta">
-                                <a href="https://wa.me/917029615248?text=I%20am%20interested%20in%20your%20service.%20How%20to%20buy%20please%20tell%20me." class="btn btn-whatsapp">Order Now</a>
-                                <button class="btn" onclick="showPaymentOptions(25000, 'Instagram 100K Bullet Package')">Pay Now</button>
+                                <button class="btn btn-whatsapp order-btn" data-package="Instagram 100K Bullet Package (100K Followers + 1M Likes + 10M Views)" data-price="25000">Order Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Facebook Packages -->
+            <div class="package-category facebook-packages" style="display: none;">
+                <h2>Facebook Promotion Packages🎯</h2>
+                <div class="packages-grid">
+                    <!-- Package 1 -->
+                    <div class="package-card">
+                        <div class="package-header">
+                            <h3>Basic Growth Package</h3>
+                        </div>
+                        <div class="package-body">
+                            <ul class="package-features">
+                                <li>500 Page Likes</li>
+                                <li>1,000 Post Reactions</li>
+                                <li>500 Shares</li>
+                                <li>100 Comments</li>
+                            </ul>
+                            <div class="package-price">
+                                <span class="original-price">₹999</span>
+                                <div class="discounted-price">₹599</div>
+                            </div>
+                            <div class="package-cta">
+                                <button class="btn btn-whatsapp order-btn" data-package="Facebook Basic Growth Package (500 Likes + 1K Reactions)" data-price="599">Order Now</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Package 2 -->
+                    <div class="package-card">
+                        <div class="package-header">
+                            <h3>Popularity Package</h3>
+                        </div>
+                        <div class="package-body">
+                            <ul class="package-features">
+                                <li>5,000 Page Likes</li>
+                                <li>10,000 Post Reactions</li>
+                                <li>2,000 Shares</li>
+                                <li>500 Comments</li>
+                                <li>1,000 Story Views</li>
+                            </ul>
+                            <div class="package-price">
+                                <span class="original-price">₹4999</span>
+                                <div class="discounted-price">₹2999</div>
+                            </div>
+                            <div class="package-cta">
+                                <button class="btn btn-whatsapp order-btn" data-package="Facebook Popularity Package (5K Likes + 10K Reactions)" data-price="2999">Order Now</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Package 3 -->
+                    <div class="package-card">
+                        <div class="package-header">
+                            <h3>Viral Package</h3>
+                        </div>
+                        <div class="package-body">
+                            <ul class="package-features">
+                                <li>10,000 Page Likes</li>
+                                <li>50,000 Post Reactions</li>
+                                <li>10,000 Shares</li>
+                                <li>2,000 Comments</li>
+                                <li>5,000 Story Views</li>
+                                <li>1,000 Group Members</li>
+                            </ul>
+                            <div class="package-price">
+                                <span class="original-price">₹9999</span>
+                                <div class="discounted-price">₹6999</div>
+                            </div>
+                            <div class="package-cta">
+                                <button class="btn btn-whatsapp order-btn" data-package="Facebook Viral Package (10K Likes + 50K Reactions)" data-price="6999">Order Now</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Package 4 -->
+                    <div class="package-card">
+                        <div class="package-header">
+                            <h3>Business Package</h3>
+                        </div>
+                        <div class="package-body">
+                            <ul class="package-features">
+                                <li>25,000 Page Likes</li>
+                                <li>100,000 Post Reactions</li>
+                                <li>25,000 Shares</li>
+                                <li>5,000 Comments</li>
+                                <li>10,000 Story Views</li>
+                                <li>5,000 Group Members</li>
+                                <li>1,000 Event Responses</li>
+                            </ul>
+                            <div class="package-price">
+                                <span class="original-price">₹19999</span>
+                                <div class="discounted-price">₹14999</div>
+                            </div>
+                            <div class="package-cta">
+                                <button class="btn btn-whatsapp order-btn" data-package="Facebook Business Package (25K Likes + 100K Reactions)" data-price="14999">Order Now</button>
                             </div>
                         </div>
                     </div>
@@ -1399,7 +1584,7 @@
                     <ul>
                         <li><a href="#packages">YouTube Services</a></li>
                         <li><a href="#packages">Instagram Services</a></li>
-                        <li><a href="#">Facebook Services</a></li>
+                        <li><a href="#packages">Facebook Services</a></li>
                         <li><a href="#">Twitter Services</a></li>
                         <li><a href="#">TikTok Services</a></li>
                     </ul>
@@ -1431,319 +1616,60 @@
         </div>
     </footer>
 
-    <!-- Payment Options Modal (will be shown via SweetAlert) -->
-
     <script>
-        // Simulated database for users
-        const usersDB = JSON.parse(localStorage.getItem('users')) || [];
-        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
-        
-        // Admin user (for demo purposes)
-        if (!usersDB.find(user => user.email === "admin@yoursmmexpert.com")) {
-            usersDB.push({
-                name: "Admin",
-                email: "admin@yoursmmexpert.com",
-                password: "admin123",
-                isAdmin: true
-            });
-            localStorage.setItem('users', JSON.stringify(usersDB));
+        // Snow Effect
+        function createSnow() {
+            const snowContainer = document.getElementById('snow');
+            snowContainer.innerHTML = '';
+            
+            const snowflakesCount = 100;
+            const colors = ['#ffffff', '#e6f7ff', '#cceeff', '#b3e6ff'];
+            
+            for (let i = 0; i < snowflakesCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                
+                // Random size between 2px and 6px
+                const size = Math.random() * 4 + 2;
+                snowflake.style.width = `${size}px`;
+                snowflake.style.height = `${size}px`;
+                
+                // Random position
+                snowflake.style.left = `${Math.random() * 100}%`;
+                
+                // Random animation duration between 5s and 15s
+                const duration = Math.random() * 10 + 5;
+                snowflake.style.animationDuration = `${duration}s`;
+                
+                // Random delay
+                snowflake.style.animationDelay = `${Math.random() * 5}s`;
+                
+                // Random opacity
+                snowflake.style.opacity = Math.random();
+                
+                // Random color
+                snowflake.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                snowContainer.appendChild(snowflake);
+            }
         }
         
-        // DOM Elements
-        const loginBtn = document.getElementById('loginBtn');
-        const signupBtn = document.getElementById('signupBtn');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const loginModal = document.getElementById('loginModal');
-        const signupModal = document.getElementById('signupModal');
-        const forgotPasswordModal = document.getElementById('forgotPasswordModal');
-        const closeLoginModal = document.getElementById('closeLoginModal');
-        const closeSignupModal = document.getElementById('closeSignupModal');
-        const closeForgotPasswordModal = document.getElementById('closeForgotPasswordModal');
-        const forgotPasswordLink = document.getElementById('forgotPassword');
-        const loginForm = document.getElementById('loginForm');
-        const signupForm = document.getElementById('signupForm');
-        const forgotPasswordForm = document.getElementById('forgotPasswordForm');
-        const authButtons = document.getElementById('authButtons');
-        const userInfo = document.getElementById('userInfo');
-        const userEmail = document.getElementById('userEmail');
-        const adminPanelBtn = document.getElementById('adminPanelBtn');
+        createSnow();
+        
+        // Dark Mode Toggle
         const darkModeToggle = document.getElementById('darkModeToggle');
         const body = document.body;
-        const currencySelect = document.getElementById('currencySelect');
-        const snowContainer = document.getElementById('snow');
+        let darkMode = localStorage.getItem('darkMode');
         
-        // Check if user is logged in
-        function checkAuthStatus() {
-            if (currentUser) {
-                authButtons.style.display = 'none';
-                userInfo.style.display = 'block';
-                userEmail.textContent = currentUser.email;
-                
-                // Show admin panel button if user is admin
-                if (currentUser.isAdmin) {
-                    adminPanelBtn.style.display = 'block';
-                }
-            } else {
-                authButtons.style.display = 'block';
-                userInfo.style.display = 'none';
-                adminPanelBtn.style.display = 'none';
-            }
-        }
-        
-        // Initialize the page
-        function init() {
-            checkAuthStatus();
-            setupEventListeners();
-            createSnowflakes();
-            
-            // Check for dark mode preference
-            let darkMode = localStorage.getItem('darkMode');
-            if (darkMode === 'enabled') {
-                body.setAttribute('data-theme', 'dark');
-                darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-            }
-            
-            // Set currency from localStorage if available
-            let selectedCurrency = localStorage.getItem('selectedCurrency') || 'INR';
-            currencySelect.value = selectedCurrency;
-            updatePrices(selectedCurrency);
-        }
-        
-        // Setup event listeners
-        function setupEventListeners() {
-            // Modal toggles
-            loginBtn.addEventListener('click', () => toggleModal(loginModal));
-            signupBtn.addEventListener('click', () => toggleModal(signupModal));
-            closeLoginModal.addEventListener('click', () => toggleModal(loginModal));
-            closeSignupModal.addEventListener('click', () => toggleModal(signupModal));
-            forgotPasswordLink.addEventListener('click', () => {
-                toggleModal(loginModal);
-                toggleModal(forgotPasswordModal);
-            });
-            closeForgotPasswordModal.addEventListener('click', () => toggleModal(forgotPasswordModal));
-            
-            // Form submissions
-            loginForm.addEventListener('submit', handleLogin);
-            signupForm.addEventListener('submit', handleSignup);
-            forgotPasswordForm.addEventListener('submit', handleForgotPassword);
-            
-            // Logout
-            logoutBtn.addEventListener('click', handleLogout);
-            
-            // Dark mode toggle
-            darkModeToggle.addEventListener('click', toggleDarkMode);
-            
-            // Currency selector
-            currencySelect.addEventListener('change', handleCurrencyChange);
-            
-            // Admin panel button
-            adminPanelBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                Swal.fire({
-                    title: 'Admin Panel',
-                    html: `
-                        <div style="text-align:left; margin-top:20px;">
-                            <h3>Admin Functions</h3>
-                            <button onclick="showUserManagement()" class="btn" style="width:100%; margin-bottom:10px;">User Management</button>
-                            <button onclick="showOrderManagement()" class="btn" style="width:100%; margin-bottom:10px;">Order Management</button>
-                            <button onclick="showPackageManagement()" class="btn" style="width:100%; margin-bottom:10px;">Package Management</button>
-                            <button onclick="showAnalytics()" class="btn" style="width:100%; margin-bottom:10px;">Analytics Dashboard</button>
-                        </div>
-                    `,
-                    showConfirmButton: false,
-                    showCloseButton: true
-                });
-            });
-            
-            // Tab functionality
-            const tabBtns = document.querySelectorAll('.tab-btn');
-            const youtubePackages = document.querySelector('.youtube-packages');
-            const instagramPackages = document.querySelector('.instagram-packages');
-            
-            tabBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    // Remove active class from all buttons
-                    tabBtns.forEach(b => b.classList.remove('active'));
-                    
-                    // Add active class to clicked button
-                    btn.classList.add('active');
-                    
-                    // Show corresponding packages
-                    if (btn.dataset.tab === 'youtube') {
-                        youtubePackages.style.display = 'block';
-                        instagramPackages.style.display = 'none';
-                    } else if (btn.dataset.tab === 'instagram') {
-                        youtubePackages.style.display = 'none';
-                        instagramPackages.style.display = 'block';
-                    }
-                });
-            });
-            
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                });
-            });
-            
-            // Sticky tabs
-            window.addEventListener('scroll', () => {
-                const tabs = document.querySelector('.services-tabs');
-                const header = document.querySelector('header');
-                const headerHeight = header.offsetHeight;
-                
-                if (window.scrollY > headerHeight) {
-                    tabs.style.top = '0';
-                } else {
-                    tabs.style.top = headerHeight + 'px';
-                }
-            });
-        }
-        
-        // Toggle modal visibility
-        function toggleModal(modal) {
-            modal.classList.toggle('active');
-        }
-        
-        // Handle login
-        function handleLogin(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            const loginMessage = document.getElementById('loginMessage');
-            
-            // Find user in database
-            const user = usersDB.find(user => user.email === email && user.password === password);
-            
-            if (user) {
-                currentUser = user;
-                localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                loginMessage.textContent = 'Login successful!';
-                loginMessage.className = 'form-message success';
-                
-                setTimeout(() => {
-                    toggleModal(loginModal);
-                    checkAuthStatus();
-                    loginForm.reset();
-                    loginMessage.textContent = '';
-                    loginMessage.className = 'form-message';
-                    
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Login Successful',
-                        text: `Welcome back, ${user.name || user.email}!`,
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
-                }, 1000);
-            } else {
-                loginMessage.textContent = 'Invalid email or password';
-                loginMessage.className = 'form-message error';
-            }
-        }
-        
-        // Handle signup
-        function handleSignup(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('signupName').value;
-            const email = document.getElementById('signupEmail').value;
-            const password = document.getElementById('signupPassword').value;
-            const confirmPassword = document.getElementById('signupConfirmPassword').value;
-            const signupMessage = document.getElementById('signupMessage');
-            
-            // Validate passwords match
-            if (password !== confirmPassword) {
-                signupMessage.textContent = 'Passwords do not match';
-                signupMessage.className = 'form-message error';
-                return;
-            }
-            
-            // Check if user already exists
-            if (usersDB.find(user => user.email === email)) {
-                signupMessage.textContent = 'Email already registered';
-                signupMessage.className = 'form-message error';
-                return;
-            }
-            
-            // Add new user
-            const newUser = {
-                name,
-                email,
-                password,
-                isAdmin: false
-            };
-            
-            usersDB.push(newUser);
-            localStorage.setItem('users', JSON.stringify(usersDB));
-            
-            signupMessage.textContent = 'Registration successful!';
-            signupMessage.className = 'form-message success';
-            
-            setTimeout(() => {
-                toggleModal(signupModal);
-                signupForm.reset();
-                signupMessage.textContent = '';
-                signupMessage.className = 'form-message';
-                
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Registration Successful',
-                    text: `Welcome to Your SMM Expert, ${name}!`,
-                    timer: 2000,
-                    showConfirmButton: false
-                });
-            }, 1000);
-        }
-        
-        // Handle forgot password
-        function handleForgotPassword(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('forgotPasswordEmail').value;
-            const forgotPasswordMessage = document.getElementById('forgotPasswordMessage');
-            
-            // Check if email exists
-            if (usersDB.find(user => user.email === email)) {
-                forgotPasswordMessage.textContent = 'Password reset link sent to your email';
-                forgotPasswordMessage.className = 'form-message success';
-                
-                setTimeout(() => {
-                    toggleModal(forgotPasswordModal);
-                    forgotPasswordForm.reset();
-                    forgotPasswordMessage.textContent = '';
-                    forgotPasswordMessage.className = 'form-message';
-                }, 2000);
-            } else {
-                forgotPasswordMessage.textContent = 'Email not found';
-                forgotPasswordMessage.className = 'form-message error';
-            }
-        }
-        
-        // Handle logout
-        function handleLogout(e) {
-            e.preventDefault();
-            
-            currentUser = null;
-            localStorage.removeItem('currentUser');
-            checkAuthStatus();
-            
-            Swal.fire({
-                icon: 'success',
-                title: 'Logged Out',
-                text: 'You have been successfully logged out',
-                timer: 2000,
-                showConfirmButton: false
-            });
+        // Check if dark mode is enabled
+        if (darkMode === 'enabled') {
+            body.setAttribute('data-theme', 'dark');
+            darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
         }
         
         // Toggle dark mode
-        function toggleDarkMode() {
-            let darkMode = localStorage.getItem('darkMode');
+        darkModeToggle.addEventListener('click', () => {
+            darkMode = localStorage.getItem('darkMode');
             
             if (darkMode !== 'enabled') {
                 body.setAttribute('data-theme', 'dark');
@@ -1754,485 +1680,373 @@
                 darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
                 localStorage.setItem('darkMode', null);
             }
-        }
+        });
         
-        // Handle currency change
-        function handleCurrencyChange() {
-            const selectedCurrency = currencySelect.value;
-            localStorage.setItem('selectedCurrency', selectedCurrency);
-            updatePrices(selectedCurrency);
-        }
+        // Currency Selector
+        const currencySelector = document.getElementById('currencySelector');
+        const currencyDropdown = document.getElementById('currencyDropdown');
         
-        // Update prices based on selected currency
+        currencySelector.addEventListener('click', () => {
+            currencyDropdown.classList.toggle('show');
+        });
+        
+        // Close currency dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!currencySelector.contains(e.target)) {
+                currencyDropdown.classList.remove('show');
+            }
+        });
+        
+        // Currency conversion rates (simplified)
+        const currencyRates = {
+            'INR': 1,
+            'USD': 0.012,
+            'EUR': 0.011,
+            'GBP': 0.0096,
+            'CAD': 0.016,
+            'AUD': 0.018,
+            'JPY': 1.76,
+            'CNY': 0.087,
+            'AED': 0.044,
+            'SAR': 0.045,
+            'SGD': 0.016,
+            'MYR': 0.056
+        };
+        
+        const currencySymbols = {
+            'INR': '₹',
+            'USD': '$',
+            'EUR': '€',
+            'GBP': '£',
+            'CAD': 'C$',
+            'AUD': 'A$',
+            'JPY': '¥',
+            'CNY': '¥',
+            'AED': 'د.إ',
+            'SAR': '﷼',
+            'SGD': 'S$',
+            'MYR': 'RM'
+        };
+        
+        let currentCurrency = 'INR';
+        
+        // Handle currency selection
+        document.querySelectorAll('.currency-option').forEach(option => {
+            option.addEventListener('click', () => {
+                currentCurrency = option.dataset.currency;
+                updatePrices(currentCurrency);
+                currencySelector.innerHTML = `<i class="fas fa-${currentCurrency === 'INR' ? 'rupee-sign' : 'dollar-sign'}"></i>`;
+                currencyDropdown.classList.remove('show');
+            });
+        });
+        
+        // Update all prices on the page
         function updatePrices(currency) {
-            // Exchange rates (simplified for demo)
-            const exchangeRates = {
-                'INR': 1,
-                'USD': 0.012,
-                'EUR': 0.011,
-                'GBP': 0.0095,
-                'CAD': 0.016,
-                'AUD': 0.018,
-                'JPY': 1.77,
-                'CNY': 0.087,
-                'AED': 0.044,
-                'SGD': 0.016,
-                'MYR': 0.056,
-                'THB': 0.43
-            };
+            const originalPrices = document.querySelectorAll('.original-price');
+            const discountedPrices = document.querySelectorAll('.discounted-price');
             
-            const rate = exchangeRates[currency];
-            const symbol = currencySelect.options[currencySelect.selectedIndex].text.match(/\((.*?)\)/)[1];
+            originalPrices.forEach(priceEl => {
+                const inrPrice = parseFloat(priceEl.textContent.replace(/[^0-9.]/g, ''));
+                const convertedPrice = inrPrice * currencyRates[currency];
+                priceEl.textContent = `${currencySymbols[currency]}${convertedPrice.toFixed(2)}`;
+            });
             
-            // Update all prices on the page
-            document.querySelectorAll('.original-price, .discounted-price').forEach(priceEl => {
-                const originalText = priceEl.textContent;
-                const amount = parseFloat(originalText.replace(/[^0-9.]/g, ''));
-                
-                if (!isNaN(amount)) {
-                    const convertedAmount = (amount * rate).toFixed(2);
-                    priceEl.textContent = `${symbol}${convertedAmount}`;
-                }
+            discountedPrices.forEach(priceEl => {
+                const inrPrice = parseFloat(priceEl.textContent.replace(/[^0-9.]/g, ''));
+                const convertedPrice = inrPrice * currencyRates[currency];
+                priceEl.textContent = `${currencySymbols[currency]}${convertedPrice.toFixed(2)}`;
             });
         }
         
-        // Show payment options
-        function showPaymentOptions(amount, packageName) {
-            if (!currentUser) {
-                Swal.fire({
-                    icon: 'info',
-                    title: 'Login Required',
-                    text: 'Please login or sign up to proceed with payment',
-                    showCancelButton: true,
-                    confirmButtonText: 'Login',
-                    cancelButtonText: 'Sign Up'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        toggleModal(loginModal);
-                    } else if (result.dismiss === Swal.DismissReason.cancel) {
-                        toggleModal(signupModal);
-                    }
+        // Tab functionality
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const youtubePackages = document.querySelector('.youtube-packages');
+        const instagramPackages = document.querySelector('.instagram-packages');
+        const facebookPackages = document.querySelector('.facebook-packages');
+        
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                tabBtns.forEach(b => b.classList.remove('active'));
+                
+                // Add active class to clicked button
+                btn.classList.add('active');
+                
+                // Show corresponding packages
+                if (btn.dataset.tab === 'youtube') {
+                    youtubePackages.style.display = 'block';
+                    instagramPackages.style.display = 'none';
+                    facebookPackages.style.display = 'none';
+                } else if (btn.dataset.tab === 'instagram') {
+                    youtubePackages.style.display = 'none';
+                    instagramPackages.style.display = 'block';
+                    facebookPackages.style.display = 'none';
+                } else {
+                    youtubePackages.style.display = 'none';
+                    instagramPackages.style.display = 'none';
+                    facebookPackages.style.display = 'block';
+                }
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
                 });
-                return;
+            });
+        });
+        
+        // Sticky tabs
+        window.addEventListener('scroll', () => {
+            const tabs = document.querySelector('.services-tabs');
+            const header = document.querySelector('header');
+            const headerHeight = header.offsetHeight;
+            
+            if (window.scrollY > headerHeight) {
+                tabs.style.top = '0';
+            } else {
+                tabs.style.top = headerHeight + 'px';
             }
+        });
+        
+        // Auth Modals
+        const loginModal = document.getElementById('loginModal');
+        const signupModal = document.getElementById('signupModal');
+        const forgotPasswordModal = document.getElementById('forgotPasswordModal');
+        const paymentModal = document.getElementById('paymentModal');
+        
+        const loginBtn = document.getElementById('loginBtn');
+        const signupBtn = document.getElementById('signupBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const userEmail = document.getElementById('userEmail');
+        
+        const closeLoginModal = document.getElementById('closeLoginModal');
+        const closeSignupModal = document.getElementById('closeSignupModal');
+        const closeForgotPasswordModal = document.getElementById('closeForgotPasswordModal');
+        const closePaymentModal = document.getElementById('closePaymentModal');
+        
+        const forgotPassword = document.getElementById('forgotPassword');
+        
+        // Show modals
+        loginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginModal.classList.add('show');
+        });
+        
+        signupBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            signupModal.classList.add('show');
+        });
+        
+        forgotPassword.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginModal.classList.remove('show');
+            forgotPasswordModal.classList.add('show');
+        });
+        
+        // Close modals
+        closeLoginModal.addEventListener('click', () => {
+            loginModal.classList.remove('show');
+        });
+        
+        closeSignupModal.addEventListener('click', () => {
+            signupModal.classList.remove('show');
+        });
+        
+        closeForgotPasswordModal.addEventListener('click', () => {
+            forgotPasswordModal.classList.remove('show');
+        });
+        
+        closePaymentModal.addEventListener('click', () => {
+            paymentModal.classList.remove('show');
+        });
+        
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                loginModal.classList.remove('show');
+            }
+            if (e.target === signupModal) {
+                signupModal.classList.remove('show');
+            }
+            if (e.target === forgotPasswordModal) {
+                forgotPasswordModal.classList.remove('show');
+            }
+            if (e.target === paymentModal) {
+                paymentModal.classList.remove('show');
+            }
+        });
+        
+        // Check if user is logged in
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const email = localStorage.getItem('email');
             
-            const selectedCurrency = currencySelect.value;
-            const symbol = currencySelect.options[currencySelect.selectedIndex].text.match(/\((.*?)\)/)[1];
-            
-            // Exchange rates (simplified for demo)
-            const exchangeRates = {
-                'INR': 1,
-                'USD': 0.012,
-                'EUR': 0.011,
-                'GBP': 0.0095,
-                'CAD': 0.016,
-                'AUD': 0.018,
-                'JPY': 1.77,
-                'CNY': 0.087,
-                'AED': 0.044,
-                'SGD': 0.016,
-                'MYR': 0.056,
-                'THB': 0.43
-            };
-            
-            const convertedAmount = (amount * exchangeRates[selectedCurrency]).toFixed(2);
-            
-            Swal.fire({
-                title: `Purchase ${packageName}`,
-                html: `
-                    <div style="text-align:left; margin-top:20px;">
-                        <p><strong>Package:</strong> ${packageName}</p>
-                        <p><strong>Amount:</strong> ${symbol}${convertedAmount}</p>
-                        <p><strong>Payment Methods:</strong></p>
-                        <div style="margin-top:15px;">
-                            <button onclick="processPayment('upi', ${amount}, '${packageName}')" class="btn" style="width:100%; margin-bottom:10px; background:#6c5ce7;">
-                                <i class="fas fa-mobile-alt"></i> UPI Payment
-                            </button>
-                            <button onclick="processPayment('card', ${amount}, '${packageName}')" class="btn" style="width:100%; margin-bottom:10px; background:#0984e3;">
-                                <i class="far fa-credit-card"></i> Credit/Debit Card
-                            </button>
-                            <button onclick="processPayment('netbanking', ${amount}, '${packageName}')" class="btn" style="width:100%; margin-bottom:10px; background:#00b894;">
-                                <i class="fas fa-university"></i> Net Banking
-                            </button>
-                            <button onclick="processPayment('crypto', ${amount}, '${packageName}')" class="btn" style="width:100%; margin-bottom:10px; background:#fdcb6e; color:#2d3436;">
-                                <i class="fab fa-bitcoin"></i> Cryptocurrency
-                            </button>
-                        </div>
-                    </div>
-                `,
-                showConfirmButton: false,
-                showCloseButton: true
-            });
-        }
-        
-        // Process payment (simulated)
-        function processPayment(method, amount, packageName) {
-            Swal.fire({
-                title: 'Processing Payment',
-                html: 'Please wait while we process your payment...',
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                    
-                    // Simulate payment processing
-                    setTimeout(() => {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Payment Successful',
-                            html: `
-                                <p>Thank you for purchasing <strong>${packageName}</strong>!</p>
-                                <p>Amount paid: <strong>₹${amount}</strong></p>
-                                <p>Your order has been placed successfully.</p>
-                                <p>Our team will contact you shortly for order details.</p>
-                            `,
-                            confirmButtonText: 'Great!'
-                        });
-                    }, 2000);
-                }
-            });
-        }
-        
-        // Admin functions
-        function showUserManagement() {
-            Swal.fire({
-                title: 'User Management',
-                html: `
-                    <div style="text-align:left; margin-top:20px; max-height:400px; overflow-y:auto;">
-                        <h3>All Users (${usersDB.length})</h3>
-                        <table style="width:100%; border-collapse:collapse; margin-top:15px;">
-                            <thead>
-                                <tr style="background:rgba(0,0,0,0.1);">
-                                    <th style="padding:8px; border-bottom:1px solid #ddd;">Name</th>
-                                    <th style="padding:8px; border-bottom:1px solid #ddd;">Email</th>
-                                    <th style="padding:8px; border-bottom:1px solid #ddd;">Type</th>
-                                    <th style="padding:8px; border-bottom:1px solid #ddd;">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${usersDB.map(user => `
-                                    <tr>
-                                        <td style="padding:8px; border-bottom:1px solid #ddd;">${user.name}</td>
-                                        <td style="padding:8px; border-bottom:1px solid #ddd;">${user.email}</td>
-                                        <td style="padding:8px; border-bottom:1px solid #ddd;">${user.isAdmin ? 'Admin' : 'User'}</td>
-                                        <td style="padding:8px; border-bottom:1px solid #ddd;">
-                                            <button onclick="editUser('${user.email}')" class="btn" style="padding:5px 10px; font-size:12px;">Edit</button>
-                                            ${!user.isAdmin ? `<button onclick="deleteUser('${user.email}')" class="btn" style="padding:5px 10px; font-size:12px; background:#e74c3c;">Delete</button>` : ''}
-                                        </td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                        <button onclick="addNewUser()" class="btn" style="margin-top:15px; width:100%;">Add New User</button>
-                    </div>
-                `,
-                width: '800px',
-                showConfirmButton: false,
-                showCloseButton: true
-            });
-        }
-        
-        function editUser(email) {
-            const user = usersDB.find(u => u.email === email);
-            Swal.fire({
-                title: 'Edit User',
-                html: `
-                    <div style="text-align:left; margin-top:15px;">
-                        <input id="editUserName" value="${user.name}" placeholder="Full Name" class="swal2-input">
-                        <input id="editUserEmail" value="${user.email}" placeholder="Email" class="swal2-input">
-                        <input id="editUserPassword" type="password" placeholder="New Password (leave blank to keep current)" class="swal2-input">
-                        <div style="margin-top:10px;">
-                            <input type="checkbox" id="editUserIsAdmin" ${user.isAdmin ? 'checked' : ''}>
-                            <label for="editUserIsAdmin">Admin User</label>
-                        </div>
-                    </div>
-                `,
-                showCancelButton: true,
-                confirmButtonText: 'Save Changes',
-                preConfirm: () => {
-                    const name = document.getElementById('editUserName').value;
-                    const newEmail = document.getElementById('editUserEmail').value;
-                    const password = document.getElementById('editUserPassword').value;
-                    const isAdmin = document.getElementById('editUserIsAdmin').checked;
-                    
-                    if (!name || !newEmail) {
-                        Swal.showValidationMessage('Name and email are required');
-                        return false;
-                    }
-                    
-                    return { name, email: newEmail, password, isAdmin };
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const { name, email: newEmail, password, isAdmin } = result.value;
-                    
-                    // Update user in database
-                    const userIndex = usersDB.findIndex(u => u.email === email);
-                    if (userIndex !== -1) {
-                        usersDB[userIndex].name = name;
-                        usersDB[userIndex].email = newEmail;
-                        if (password) usersDB[userIndex].password = password;
-                        usersDB[userIndex].isAdmin = isAdmin;
-                        
-                        localStorage.setItem('users', JSON.stringify(usersDB));
-                        
-                        // Update currentUser if it's the logged in user
-                        if (currentUser && currentUser.email === email) {
-                            currentUser = usersDB[userIndex];
-                            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                            checkAuthStatus();
-                        }
-                        
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'User Updated',
-                            text: 'User information has been updated successfully'
-                        });
-                    }
-                }
-            });
-        }
-        
-        function deleteUser(email) {
-            Swal.fire({
-                title: 'Delete User?',
-                text: 'Are you sure you want to delete this user? This action cannot be undone.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Delete',
-                confirmButtonColor: '#e74c3c'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const userIndex = usersDB.findIndex(u => u.email === email);
-                    if (userIndex !== -1) {
-                        usersDB.splice(userIndex, 1);
-                        localStorage.setItem('users', JSON.stringify(usersDB));
-                        
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'User Deleted',
-                            text: 'The user has been removed from the system'
-                        });
-                    }
-                }
-            });
-        }
-        
-        function addNewUser() {
-            Swal.fire({
-                title: 'Add New User',
-                html: `
-                    <div style="text-align:left; margin-top:15px;">
-                        <input id="newUserName" placeholder="Full Name" class="swal2-input">
-                        <input id="newUserEmail" placeholder="Email" class="swal2-input">
-                        <input id="newUserPassword" type="password" placeholder="Password" class="swal2-input">
-                        <div style="margin-top:10px;">
-                            <input type="checkbox" id="newUserIsAdmin">
-                            <label for="newUserIsAdmin">Admin User</label>
-                        </div>
-                    </div>
-                `,
-                showCancelButton: true,
-                confirmButtonText: 'Add User',
-                preConfirm: () => {
-                    const name = document.getElementById('newUserName').value;
-                    const email = document.getElementById('newUserEmail').value;
-                    const password = document.getElementById('newUserPassword').value;
-                    const isAdmin = document.getElementById('newUserIsAdmin').checked;
-                    
-                    if (!name || !email || !password) {
-                        Swal.showValidationMessage('All fields are required');
-                        return false;
-                    }
-                    
-                    if (usersDB.find(u => u.email === email)) {
-                        Swal.showValidationMessage('User with this email already exists');
-                        return false;
-                    }
-                    
-                    return { name, email, password, isAdmin };
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const { name, email, password, isAdmin } = result.value;
-                    
-                    // Add new user to database
-                    usersDB.push({
-                        name,
-                        email,
-                        password,
-                        isAdmin
-                    });
-                    
-                    localStorage.setItem('users', JSON.stringify(usersDB));
-                    
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'User Added',
-                        text: 'New user has been created successfully'
-                    });
-                }
-            });
-        }
-        
-        function showOrderManagement() {
-            Swal.fire({
-                title: 'Order Management',
-                html: `
-                    <div style="text-align:left; margin-top:20px;">
-                        <p>Order management functionality would be implemented here with a connection to a backend database.</p>
-                        <p>This would include:</p>
-                        <ul>
-                            <li>View all orders</li>
-                            <li>Filter by status (pending, completed, failed)</li>
-                            <li>Update order status</li>
-                            <li>Process refunds</li>
-                            <li>Generate reports</li>
-                        </ul>
-                    </div>
-                `,
-                showConfirmButton: false,
-                showCloseButton: true
-            });
-        }
-        
-        function showPackageManagement() {
-            Swal.fire({
-                title: 'Package Management',
-                html: `
-                    <div style="text-align:left; margin-top:20px;">
-                        <p>Package management functionality would be implemented here with a connection to a backend database.</p>
-                        <p>This would include:</p>
-                        <ul>
-                            <li>Add new service packages</li>
-                            <li>Edit existing packages</li>
-                            <li>Update pricing</li>
-                            <li>Manage package visibility</li>
-                            <li>Set special offers</li>
-                        </ul>
-                        <button onclick="addNewPackage()" class="btn" style="margin-top:15px; width:100%;">Add New Package</button>
-                    </div>
-                `,
-                showConfirmButton: false,
-                showCloseButton: true
-            });
-        }
-        
-        function addNewPackage() {
-            Swal.fire({
-                title: 'Add New Package',
-                html: `
-                    <div style="text-align:left; margin-top:15px;">
-                        <input id="newPackageName" placeholder="Package Name" class="swal2-input">
-                        <select id="newPackageCategory" class="swal2-input">
-                            <option value="youtube">YouTube</option>
-                            <option value="instagram">Instagram</option>
-                            <option value="facebook">Facebook</option>
-                            <option value="tiktok">TikTok</option>
-                        </select>
-                        <textarea id="newPackageFeatures" placeholder="Features (one per line)" class="swal2-textarea" style="height:100px;"></textarea>
-                        <input id="newPackageOriginalPrice" type="number" placeholder="Original Price" class="swal2-input">
-                        <input id="newPackageDiscountedPrice" type="number" placeholder="Discounted Price" class="swal2-input">
-                    </div>
-                `,
-                showCancelButton: true,
-                confirmButtonText: 'Add Package',
-                preConfirm: () => {
-                    const name = document.getElementById('newPackageName').value;
-                    const category = document.getElementById('newPackageCategory').value;
-                    const features = document.getElementById('newPackageFeatures').value;
-                    const originalPrice = document.getElementById('newPackageOriginalPrice').value;
-                    const discountedPrice = document.getElementById('newPackageDiscountedPrice').value;
-                    
-                    if (!name || !features || !originalPrice || !discountedPrice) {
-                        Swal.showValidationMessage('All fields are required');
-                        return false;
-                    }
-                    
-                    return { name, category, features, originalPrice, discountedPrice };
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Package Added',
-                        text: 'New package has been created successfully'
-                    });
-                }
-            });
-        }
-        
-        function showAnalytics() {
-            Swal.fire({
-                title: 'Analytics Dashboard',
-                html: `
-                    <div style="text-align:left; margin-top:20px;">
-                        <p>Analytics dashboard would be implemented here with charts and statistics.</p>
-                        <p>This would include:</p>
-                        <ul>
-                            <li>Sales trends</li>
-                            <li>Revenue reports</li>
-                            <li>User growth</li>
-                            <li>Popular packages</li>
-                            <li>Conversion rates</li>
-                        </ul>
-                        <div style="margin-top:20px; background:#f5f5f5; padding:15px; border-radius:5px; color:#333;">
-                            <h4>Sample Chart</h4>
-                            <div style="height:200px; background:white; border:1px solid #ddd; display:flex; align-items:flex-end; justify-content:space-around; padding:10px;">
-                                <div style="width:30px; background:#3498db; height:50%;"></div>
-                                <div style="width:30px; background:#3498db; height:70%;"></div>
-                                <div style="width:30px; background:#3498db; height:90%;"></div>
-                                <div style="width:30px; background:#3498db; height:60%;"></div>
-                                <div style="width:30px; background:#3498db; height:30%;"></div>
-                                <div style="width:30px; background:#3498db; height:80%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                `,
-                width: '800px',
-                showConfirmButton: false,
-                showCloseButton: true
-            });
-        }
-        
-        // Create snowflakes for winter effect
-        function createSnowflakes() {
-            const snowContainer = document.getElementById('snow');
-            const snowflakeCount = 50;
-            
-            for (let i = 0; i < snowflakeCount; i++) {
-                const snowflake = document.createElement('div');
-                snowflake.innerHTML = '❄';
-                snowflake.style.position = 'absolute';
-                snowflake.style.color = '#fff';
-                snowflake.style.fontSize = `${Math.random() * 10 + 10}px`;
-                snowflake.style.opacity = Math.random();
-                snowflake.style.left = `${Math.random() * 100}vw`;
-                snowflake.style.top = `${Math.random() * 100}vh`;
-                snowflake.style.animation = `fall ${Math.random() * 10 + 5}s linear infinite`;
-                snowflake.style.animationDelay = `${Math.random() * 5}s`;
-                snowflake.style.pointerEvents = 'none';
-                snowflake.style.userSelect = 'none';
-                snowflake.style.zIndex = '1002';
-                
-                // Add animation
-                const keyframes = `
-                    @keyframes fall {
-                        to {
-                            transform: translateY(100vh) translateX(${Math.random() * 100 - 50}px);
-                        }
-                    }
-                `;
-                
-                const style = document.createElement('style');
-                style.innerHTML = keyframes;
-                document.head.appendChild(style);
-                
-                snowContainer.appendChild(snowflake);
+            if (token && email) {
+                loginBtn.style.display = 'none';
+                signupBtn.style.display = 'none';
+                logoutBtn.style.display = 'inline-block';
+                userEmail.style.display = 'inline-block';
+                userEmail.textContent = email;
+            } else {
+                loginBtn.style.display = 'inline-block';
+                signupBtn.style.display = 'inline-block';
+                logoutBtn.style.display = 'none';
+                userEmail.style.display = 'none';
             }
         }
         
-        // Initialize the page
-        init();
+        // Logout
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('token');
+            localStorage.removeItem('email');
+            checkAuth();
+        });
+        
+        // Login form
+        const loginForm = document.getElementById('loginForm');
+        const loginError = document.getElementById('loginError');
+        
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            try {
+                // Simulate API call
+                // In a real app, you would call your backend API here
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // For demo purposes, we'll just check if email contains '@' and password is at least 6 chars
+                if (!email.includes('@') || password.length < 6) {
+                    throw new Error('Invalid email or password');
+                }
+                
+                // Simulate successful login
+                localStorage.setItem('token', 'demo-token-123');
+                localStorage.setItem('email', email);
+                
+                loginError.textContent = '';
+                loginModal.classList.remove('show');
+                checkAuth();
+            } catch (error) {
+                loginError.textContent = error.message;
+            }
+        });
+        
+        // Signup form
+        const signupForm = document.getElementById('signupForm');
+        const signupError = document.getElementById('signupError');
+        
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+            
+            try {
+                if (password !== confirmPassword) {
+                    throw new Error('Passwords do not match');
+                }
+                
+                if (password.length < 6) {
+                    throw new Error('Password must be at least 6 characters');
+                }
+                
+                if (!email.includes('@')) {
+                    throw new Error('Invalid email address');
+                }
+                
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Simulate successful signup
+                localStorage.setItem('token', 'demo-token-123');
+                localStorage.setItem('email', email);
+                
+                signupError.textContent = '';
+                signupModal.classList.remove('show');
+                checkAuth();
+            } catch (error) {
+                signupError.textContent = error.message;
+            }
+        });
+        
+        // Forgot password form
+        const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+        const forgotPasswordError = document.getElementById('forgotPasswordError');
+        
+        forgotPasswordForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('forgotPasswordEmail').value;
+            
+            try {
+                if (!email.includes('@')) {
+                    throw new Error('Invalid email address');
+                }
+                
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                forgotPasswordError.textContent = 'Password reset link sent to your email!';
+                
+                setTimeout(() => {
+                    forgotPasswordModal.classList.remove('show');
+                    forgotPasswordError.textContent = '';
+                }, 2000);
+            } catch (error) {
+                forgotPasswordError.textContent = error.message;
+            }
+        });
+        
+        // Order buttons
+        const orderButtons = document.querySelectorAll('.order-btn');
+        
+        orderButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                const packageName = button.dataset.package;
+                const packagePrice = button.dataset.price;
+                
+                // Check if user is logged in
+                const token = localStorage.getItem('token');
+                
+                if (!token) {
+                    loginModal.classList.add('show');
+                    return;
+                }
+                
+                // Show payment modal
+                paymentModal.classList.add('show');
+                
+                // In a real app, you would handle the payment here
+                // For demo, we'll just log the order
+                console.log(`Ordering: ${packageName} for ${packagePrice}`);
+            });
+        });
+        
+        // Payment options
+        const paymentOptions = document.querySelectorAll('.payment-option');
+        
+        paymentOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const method = option.dataset.method;
+                alert(`Redirecting to ${method} payment...`);
+                paymentModal.classList.remove('show');
+            });
+        });
+        
+        // Initialize
+        checkAuth();
     </script>
 </body>
 </html>
