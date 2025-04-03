@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your SMM Expert - Premium Social Media Marketing Services</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         /* Global Styles */
         :root {
@@ -18,7 +17,6 @@
             --gray: #7f8c8d;
             --dark-gray: #2c3e50;
             --premium-gray: #34495e;
-            --telegram: #0088cc;
         }
         
         [data-theme="dark"] {
@@ -48,26 +46,12 @@
         /* Snow Effect */
         .snow {
             position: fixed;
-            top: -10px;
+            top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 9999;
             pointer-events: none;
-        }
-        
-        .snowflake {
-            position: absolute;
-            background-color: white;
-            border-radius: 50%;
-            opacity: 0.8;
-            animation: fall linear infinite;
-        }
-        
-        @keyframes fall {
-            to {
-                transform: translateY(100vh);
-            }
+            z-index: 1001;
         }
         
         @keyframes slideIn {
@@ -119,11 +103,11 @@
         }
         
         .btn-telegram {
-            background: var(--telegram);
+            background: #0088cc;
         }
         
         .btn-telegram:hover {
-            background: #0077b5;
+            background: #006699;
         }
         
         .btn-outline {
@@ -224,16 +208,21 @@
             font-size: 1.2rem;
         }
         
+        .currency-selector:hover {
+            animation: pulse 1.5s infinite;
+        }
+        
         .currency-dropdown {
             position: absolute;
-            top: 90px;
+            top: 100%;
             right: 0;
-            background: var(--secondary);
+            background: var(--primary);
             border-radius: 5px;
             padding: 10px;
-            width: 200px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             display: none;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            width: 200px;
+            z-index: 1002;
         }
         
         .currency-dropdown.show {
@@ -248,7 +237,6 @@
         
         .currency-option:hover {
             background: var(--accent);
-            color: white;
         }
         
         /* Header Styles */
@@ -312,14 +300,6 @@
             justify-content: center;
             align-items: center;
             z-index: 2000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-        
-        .auth-modal.show {
-            opacity: 1;
-            visibility: visible;
         }
         
         .auth-modal-content {
@@ -329,22 +309,18 @@
             width: 90%;
             max-width: 400px;
             box-shadow: 0 5px 30px rgba(0,0,0,0.3);
-            transform: translateY(-20px);
-            transition: transform 0.3s ease;
             position: relative;
-        }
-        
-        .auth-modal.show .auth-modal-content {
-            transform: translateY(0);
         }
         
         .close-modal {
             position: absolute;
             top: 15px;
             right: 15px;
+            background: none;
+            border: none;
+            color: var(--text);
             font-size: 1.5rem;
             cursor: pointer;
-            color: var(--text);
         }
         
         .auth-modal h2 {
@@ -391,14 +367,6 @@
             font-size: 0.9rem;
         }
         
-        .auth-error {
-            color: #e74c3c;
-            font-size: 0.9rem;
-            margin-top: -10px;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-        
         /* Payment Modal */
         .payment-modal {
             position: fixed;
@@ -411,14 +379,6 @@
             justify-content: center;
             align-items: center;
             z-index: 2000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-        
-        .payment-modal.show {
-            opacity: 1;
-            visibility: visible;
         }
         
         .payment-modal-content {
@@ -428,40 +388,32 @@
             width: 90%;
             max-width: 500px;
             box-shadow: 0 5px 30px rgba(0,0,0,0.3);
-            transform: translateY(-20px);
-            transition: transform 0.3s ease;
             position: relative;
         }
         
-        .payment-modal.show .payment-modal-content {
-            transform: translateY(0);
-        }
-        
         .payment-options {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 15px;
             margin-top: 20px;
         }
         
         .payment-option {
-            display: flex;
-            align-items: center;
-            padding: 15px;
             background: var(--secondary);
+            padding: 15px;
             border-radius: 5px;
+            text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
         }
         
         .payment-option:hover {
             background: var(--accent);
-            color: white;
         }
         
         .payment-option i {
-            font-size: 1.5rem;
-            margin-right: 15px;
+            font-size: 2rem;
+            margin-bottom: 10px;
         }
         
         /* Hero Section */
@@ -830,54 +782,49 @@
         }
         
         /* Floating Buttons */
-        .float-whatsapp {
+        .float-buttons {
             position: fixed;
             bottom: 30px;
             right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+        
+        .float-btn {
             width: 60px;
             height: 60px;
-            background: #25D366;
-            color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 30px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-            animation: pulse 2s infinite;
             transition: all 0.3s ease;
+            color: white;
+            animation: pulse 2s infinite;
         }
-
-        .float-whatsapp:hover {
-            background: #128C7E;
+        
+        .float-btn:hover {
             transform: scale(1.1);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
         }
         
-        .float-telegram {
-            position: fixed;
-            bottom: 110px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: var(--telegram);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-            animation: pulse 2s infinite;
-            transition: all 0.3s ease;
+        .float-whatsapp {
+            background: #25D366;
         }
-
+        
+        .float-whatsapp:hover {
+            background: #128C7E;
+        }
+        
+        .float-telegram {
+            background: #0088cc;
+        }
+        
         .float-telegram:hover {
-            background: #0077b5;
-            transform: scale(1.1);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            background: #006699;
         }
         
         /* Responsive Styles */
@@ -941,16 +888,12 @@
                 top: 70px;
             }
             
-            .float-whatsapp, .float-telegram {
+            .float-btn {
                 width: 50px;
                 height: 50px;
                 font-size: 25px;
                 bottom: 20px;
                 right: 20px;
-            }
-            
-            .float-telegram {
-                bottom: 85px;
             }
         }
         
@@ -990,37 +933,37 @@
     <!-- Snow Effect -->
     <div class="snow" id="snow"></div>
 
-    <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/917029615248" class="float-whatsapp" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-    
-    <!-- Floating Telegram Button -->
-    <a href="https://t.me/917029615248" class="float-telegram" target="_blank">
-        <i class="fab fa-telegram"></i>
-    </a>
+    <!-- Floating Buttons -->
+    <div class="float-buttons">
+        <a href="https://wa.me/917029615248" class="float-btn float-whatsapp" target="_blank">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="https://t.me/917029615248" class="float-btn float-telegram" target="_blank">
+            <i class="fab fa-telegram"></i>
+        </a>
+    </div>
 
     <!-- Dark Mode Toggle -->
     <button class="dark-mode-toggle" id="darkModeToggle">
         <i class="fas fa-moon"></i>
     </button>
-    
+
     <!-- Currency Selector -->
     <div class="currency-selector" id="currencySelector">
-        <i class="fas fa-rupee-sign"></i>
+        <i class="fas fa-money-bill-wave"></i>
         <div class="currency-dropdown" id="currencyDropdown">
-            <div class="currency-option" data-currency="INR">Indian Rupee (₹)</div>
-            <div class="currency-option" data-currency="USD">US Dollar ($)</div>
-            <div class="currency-option" data-currency="EUR">Euro (€)</div>
-            <div class="currency-option" data-currency="GBP">British Pound (£)</div>
-            <div class="currency-option" data-currency="CAD">Canadian Dollar (C$)</div>
-            <div class="currency-option" data-currency="AUD">Australian Dollar (A$)</div>
-            <div class="currency-option" data-currency="JPY">Japanese Yen (¥)</div>
-            <div class="currency-option" data-currency="CNY">Chinese Yuan (¥)</div>
-            <div class="currency-option" data-currency="AED">UAE Dirham (د.إ)</div>
-            <div class="currency-option" data-currency="SAR">Saudi Riyal (﷼)</div>
-            <div class="currency-option" data-currency="SGD">Singapore Dollar (S$)</div>
-            <div class="currency-option" data-currency="MYR">Malaysian Ringgit (RM)</div>
+            <div class="currency-option" data-currency="INR">🇮🇳 Indian Rupee (INR)</div>
+            <div class="currency-option" data-currency="USD">🇺🇸 US Dollar (USD)</div>
+            <div class="currency-option" data-currency="EUR">🇪🇺 Euro (EUR)</div>
+            <div class="currency-option" data-currency="GBP">🇬🇧 British Pound (GBP)</div>
+            <div class="currency-option" data-currency="CAD">🇨🇦 Canadian Dollar (CAD)</div>
+            <div class="currency-option" data-currency="AUD">🇦🇺 Australian Dollar (AUD)</div>
+            <div class="currency-option" data-currency="JPY">🇯🇵 Japanese Yen (JPY)</div>
+            <div class="currency-option" data-currency="CNY">🇨🇳 Chinese Yuan (CNY)</div>
+            <div class="currency-option" data-currency="AED">🇦🇪 UAE Dirham (AED)</div>
+            <div class="currency-option" data-currency="SAR">🇸🇦 Saudi Riyal (SAR)</div>
+            <div class="currency-option" data-currency="SGD">🇸🇬 Singapore Dollar (SGD)</div>
+            <div class="currency-option" data-currency="MYR">🇲🇾 Malaysian Ringgit (MYR)</div>
         </div>
     </div>
 
@@ -1035,34 +978,33 @@
                 <span id="userEmail" class="user-email" style="display: none;"></span>
                 <a href="#" class="btn btn-outline" id="loginBtn">Login</a>
                 <a href="#" class="btn" id="signupBtn">Sign Up</a>
-                <a href="#" class="btn" id="logoutBtn" style="display: none;">Logout</a>
+                <a href="#" class="btn" id="adminBtn" style="display: none;">Admin</a>
+                <a href="#" class="btn btn-outline" id="logoutBtn" style="display: none;">Logout</a>
             </div>
         </div>
     </header>
 
     <!-- Auth Modals -->
-    <div class="auth-modal" id="loginModal">
+    <div class="auth-modal" id="loginModal" style="display: none;">
         <div class="auth-modal-content">
-            <span class="close-modal" id="closeLoginModal">&times;</span>
+            <button class="close-modal" id="closeLoginModal">&times;</button>
             <h2>Login</h2>
-            <div class="auth-error" id="loginError"></div>
-            <form class="auth-form" id="loginForm">
+            <form id="loginForm" class="auth-form">
                 <input type="email" id="loginEmail" placeholder="Email" required>
                 <input type="password" id="loginPassword" placeholder="Password" required>
                 <div class="auth-modal-buttons">
                     <button type="submit" class="btn">Login</button>
                 </div>
+                <p class="forgot-password" id="forgotPassword">Forgot Password?</p>
             </form>
-            <p class="forgot-password" id="forgotPassword">Forgot Password?</p>
         </div>
     </div>
 
-    <div class="auth-modal" id="signupModal">
+    <div class="auth-modal" id="signupModal" style="display: none;">
         <div class="auth-modal-content">
-            <span class="close-modal" id="closeSignupModal">&times;</span>
+            <button class="close-modal" id="closeSignupModal">&times;</button>
             <h2>Sign Up</h2>
-            <div class="auth-error" id="signupError"></div>
-            <form class="auth-form" id="signupForm">
+            <form id="signupForm" class="auth-form">
                 <input type="text" id="signupName" placeholder="Full Name" required>
                 <input type="email" id="signupEmail" placeholder="Email" required>
                 <input type="password" id="signupPassword" placeholder="Password" required>
@@ -1074,13 +1016,12 @@
         </div>
     </div>
 
-    <div class="auth-modal" id="forgotPasswordModal">
+    <div class="auth-modal" id="forgotPasswordModal" style="display: none;">
         <div class="auth-modal-content">
-            <span class="close-modal" id="closeForgotPasswordModal">&times;</span>
+            <button class="close-modal" id="closeForgotPasswordModal">&times;</button>
             <h2>Reset Password</h2>
-            <div class="auth-error" id="forgotPasswordError"></div>
-            <form class="auth-form" id="forgotPasswordForm">
-                <input type="email" id="forgotPasswordEmail" placeholder="Email" required>
+            <form id="forgotPasswordForm" class="auth-form">
+                <input type="email" id="forgotEmail" placeholder="Email" required>
                 <div class="auth-modal-buttons">
                     <button type="submit" class="btn">Reset Password</button>
                 </div>
@@ -1089,27 +1030,26 @@
     </div>
 
     <!-- Payment Modal -->
-    <div class="payment-modal" id="paymentModal">
+    <div class="payment-modal" id="paymentModal" style="display: none;">
         <div class="payment-modal-content">
-            <span class="close-modal" id="closePaymentModal">&times;</span>
+            <button class="close-modal" id="closePaymentModal">&times;</button>
             <h2>Select Payment Method</h2>
-            <p>Choose your preferred payment method to complete your order.</p>
             <div class="payment-options">
                 <div class="payment-option" data-method="paypal">
                     <i class="fab fa-paypal"></i>
-                    <span>PayPal</span>
+                    <p>PayPal</p>
                 </div>
                 <div class="payment-option" data-method="stripe">
                     <i class="fab fa-cc-stripe"></i>
-                    <span>Credit/Debit Card</span>
-                </div>
-                <div class="payment-option" data-method="razorpay">
-                    <i class="fas fa-rupee-sign"></i>
-                    <span>Razorpay (India)</span>
+                    <p>Credit Card</p>
                 </div>
                 <div class="payment-option" data-method="crypto">
                     <i class="fab fa-bitcoin"></i>
-                    <span>Cryptocurrency</span>
+                    <p>Crypto</p>
+                </div>
+                <div class="payment-option" data-method="bank">
+                    <i class="fas fa-university"></i>
+                    <p>Bank Transfer</p>
                 </div>
             </div>
         </div>
@@ -1130,7 +1070,7 @@
             <div class="tabs-container">
                 <button class="tab-btn active" data-tab="youtube"> 🔴 YouTube Promotion</button>
                 <button class="tab-btn" data-tab="instagram">🚀 Instagram Promotion</button>
-                <button class="tab-btn" data-tab="facebook"> 🎯 Facebook Promotion</button>
+                <button class="tab-btn" data-tab="Facebook"> 🎯 Facebook Promotion</button>
             </div>
         </div>
     </section>
@@ -1158,7 +1098,7 @@
                                 <div class="discounted-price">₹99</div>
                             </div>
                             <div class="package-cta">
-                                <button class="btn btn-whatsapp order-btn" data-package="Beginners Package (100 Subscribers + 100 Views + 500 Likes)" data-price="99">Order Now</button>
+                                <button class="btn btn-whatsapp order-btn" data-package="Beginners Package" data-price="99">Order Now</button>
                             </div>
                         </div>
                     </div>
@@ -1180,7 +1120,7 @@
                                 <div class="discounted-price">₹999</div>
                             </div>
                             <div class="package-cta">
-                                <button class="btn btn-whatsapp order-btn" data-package="1K Subscribers Package (1K Subs + 2K Views + 5K Likes)" data-price="999">Order Now</button>
+                                <button class="btn btn-whatsapp order-btn" data-package="1K Subscribers Package" data-price="999">Order Now</button>
                             </div>
                         </div>
                     </div>
@@ -1202,7 +1142,7 @@
                                 <div class="discounted-price">₹1999</div>
                             </div>
                             <div class="package-cta">
-                                <button class="btn btn-whatsapp order-btn" data-package="5K Subscribers Package (5K Subs + 2K Views + 7K Likes)" data-price="1999">Order Now</button>
+                                <button class="btn btn-whatsapp order-btn" data-package="5K Subscribers Package" data-price="1999">Order Now</button>
                             </div>
                         </div>
                     </div>
@@ -1225,7 +1165,7 @@
                                 <div class="discounted-price">₹6999</div>
                             </div>
                             <div class="package-cta">
-                                <button class="btn btn-whatsapp order-btn" data-package="10K Subscribers Package (10K Subs + 10K Views + 1K Comments)" data-price="6999">Order Now</button>
+                                <button class="btn btn-whatsapp order-btn" data-package="10K Subscribers Package" data-price="6999">Order Now</button>
                             </div>
                         </div>
                     </div>
@@ -1246,7 +1186,7 @@
                                 <div class="discounted-price">₹14999</div>
                             </div>
                             <div class="package-cta">
-                                <button class="btn btn-whatsapp order-btn" data-package="Monetization Package (2K Subs + 4K Watch Hours)" data-price="14999">Order Now</button>
+                                <button class="btn btn-whatsapp order-btn" data-package="Monetization Package" data-price="14999">Order Now</button>
                             </div>
                         </div>
                     </div>
@@ -1273,7 +1213,7 @@
                                 <div class="discounted-price">₹199</div>
                             </div>
                             <div class="package-cta">
-                                <button class="btn btn-whatsapp order-btn" data-package="Instagram Beginners Package (1K Followers + 10K Views + 1K Likes)" data-price="199">Order Now</button>
+                                <button class="btn btn-whatsapp order-btn" data-package="Instagram Beginners Package" data-price="199">Order Now</button>
                             </div>
                         </div>
                     </div>
@@ -1296,7 +1236,7 @@
                                 <div class="discounted-price">₹1199</div>
                             </div>
                             <div class="package-cta">
-                                <button class="btn btn-whatsapp order-btn" data-package="Instagram Intermediate Package (5K Followers + 10K Likes + 50K Views)" data-price="1199">Order Now</button>
+                                <button class="btn btn-whatsapp order-btn" data-package="Instagram Intermediate Package" data-price="1199">Order Now</button>
                             </div>
                         </div>
                     </div>
@@ -1320,7 +1260,7 @@
                                 <div class="discounted-price">₹4999</div>
                             </div>
                             <div class="package-cta">
-                                <button class="btn btn-whatsapp order-btn" data-package="Instagram Brand Building Package (10K Followers + 100K Views + 20K Impressions)" data-price="4999">Order Now</button>
+                                <button class="btn btn-whatsapp order-btn" data-package="Instagram Brand Building Package" data-price="4999">Order Now</button>
                             </div>
                         </div>
                     </div>
@@ -1345,7 +1285,7 @@
                                 <div class="discounted-price">₹14999</div>
                             </div>
                             <div class="package-cta">
-                                <button class="btn btn-whatsapp order-btn" data-package="Instagram Celebrity Package (50K Followers + 1M Views + 500K Impressions)" data-price="14999">Order Now</button>
+                                <button class="btn btn-whatsapp order-btn" data-package="Instagram Celebrity Package" data-price="14999">Order Now</button>
                             </div>
                         </div>
                     </div>
@@ -1370,107 +1310,7 @@
                                 <div class="discounted-price">₹25000</div>
                             </div>
                             <div class="package-cta">
-                                <button class="btn btn-whatsapp order-btn" data-package="Instagram 100K Bullet Package (100K Followers + 1M Likes + 10M Views)" data-price="25000">Order Now</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Facebook Packages -->
-            <div class="package-category facebook-packages" style="display: none;">
-                <h2>Facebook Promotion Packages🎯</h2>
-                <div class="packages-grid">
-                    <!-- Package 1 -->
-                    <div class="package-card">
-                        <div class="package-header">
-                            <h3>Basic Growth Package</h3>
-                        </div>
-                        <div class="package-body">
-                            <ul class="package-features">
-                                <li>500 Page Likes</li>
-                                <li>1,000 Post Reactions</li>
-                                <li>500 Shares</li>
-                                <li>100 Comments</li>
-                            </ul>
-                            <div class="package-price">
-                                <span class="original-price">₹999</span>
-                                <div class="discounted-price">₹599</div>
-                            </div>
-                            <div class="package-cta">
-                                <button class="btn btn-whatsapp order-btn" data-package="Facebook Basic Growth Package (500 Likes + 1K Reactions)" data-price="599">Order Now</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Package 2 -->
-                    <div class="package-card">
-                        <div class="package-header">
-                            <h3>Popularity Package</h3>
-                        </div>
-                        <div class="package-body">
-                            <ul class="package-features">
-                                <li>5,000 Page Likes</li>
-                                <li>10,000 Post Reactions</li>
-                                <li>2,000 Shares</li>
-                                <li>500 Comments</li>
-                                <li>1,000 Story Views</li>
-                            </ul>
-                            <div class="package-price">
-                                <span class="original-price">₹4999</span>
-                                <div class="discounted-price">₹2999</div>
-                            </div>
-                            <div class="package-cta">
-                                <button class="btn btn-whatsapp order-btn" data-package="Facebook Popularity Package (5K Likes + 10K Reactions)" data-price="2999">Order Now</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Package 3 -->
-                    <div class="package-card">
-                        <div class="package-header">
-                            <h3>Viral Package</h3>
-                        </div>
-                        <div class="package-body">
-                            <ul class="package-features">
-                                <li>10,000 Page Likes</li>
-                                <li>50,000 Post Reactions</li>
-                                <li>10,000 Shares</li>
-                                <li>2,000 Comments</li>
-                                <li>5,000 Story Views</li>
-                                <li>1,000 Group Members</li>
-                            </ul>
-                            <div class="package-price">
-                                <span class="original-price">₹9999</span>
-                                <div class="discounted-price">₹6999</div>
-                            </div>
-                            <div class="package-cta">
-                                <button class="btn btn-whatsapp order-btn" data-package="Facebook Viral Package (10K Likes + 50K Reactions)" data-price="6999">Order Now</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Package 4 -->
-                    <div class="package-card">
-                        <div class="package-header">
-                            <h3>Business Package</h3>
-                        </div>
-                        <div class="package-body">
-                            <ul class="package-features">
-                                <li>25,000 Page Likes</li>
-                                <li>100,000 Post Reactions</li>
-                                <li>25,000 Shares</li>
-                                <li>5,000 Comments</li>
-                                <li>10,000 Story Views</li>
-                                <li>5,000 Group Members</li>
-                                <li>1,000 Event Responses</li>
-                            </ul>
-                            <div class="package-price">
-                                <span class="original-price">₹19999</span>
-                                <div class="discounted-price">₹14999</div>
-                            </div>
-                            <div class="package-cta">
-                                <button class="btn btn-whatsapp order-btn" data-package="Facebook Business Package (25K Likes + 100K Reactions)" data-price="14999">Order Now</button>
+                                <button class="btn btn-whatsapp order-btn" data-package="Instagram 100K Bullet Package" data-price="25000">Order Now</button>
                             </div>
                         </div>
                     </div>
@@ -1577,6 +1417,7 @@
                         <a href="https://www.instagram.com/subhankor_65?igsh=aGFtdzV6NjB3ZTc0" target="_blank"><i class="fab fa-instagram"></i></a>
                         <a href="https://youtube.com/@yoursmmexpart?si=WQP7C6o9nwU81DJu" target="_blank"><i class="fab fa-youtube"></i></a>
                         <a href="https://wa.me/917029615248" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://t.me/917029615248" target="_blank"><i class="fab fa-telegram"></i></a>
                     </div>
                 </div>
                 <div class="footer-column">
@@ -1584,7 +1425,7 @@
                     <ul>
                         <li><a href="#packages">YouTube Services</a></li>
                         <li><a href="#packages">Instagram Services</a></li>
-                        <li><a href="#packages">Facebook Services</a></li>
+                        <li><a href="#">Facebook Services</a></li>
                         <li><a href="#">Twitter Services</a></li>
                         <li><a href="#">TikTok Services</a></li>
                     </ul>
@@ -1619,43 +1460,41 @@
     <script>
         // Snow Effect
         function createSnow() {
-            const snowContainer = document.getElementById('snow');
-            snowContainer.innerHTML = '';
+            const snow = document.getElementById('snow');
+            const snowflakes = 100;
             
-            const snowflakesCount = 100;
-            const colors = ['#ffffff', '#e6f7ff', '#cceeff', '#b3e6ff'];
-            
-            for (let i = 0; i < snowflakesCount; i++) {
+            for (let i = 0; i < snowflakes; i++) {
                 const snowflake = document.createElement('div');
-                snowflake.classList.add('snowflake');
-                
-                // Random size between 2px and 6px
-                const size = Math.random() * 4 + 2;
-                snowflake.style.width = `${size}px`;
-                snowflake.style.height = `${size}px`;
-                
-                // Random position
-                snowflake.style.left = `${Math.random() * 100}%`;
-                
-                // Random animation duration between 5s and 15s
-                const duration = Math.random() * 10 + 5;
-                snowflake.style.animationDuration = `${duration}s`;
-                
-                // Random delay
-                snowflake.style.animationDelay = `${Math.random() * 5}s`;
-                
-                // Random opacity
+                snowflake.style.position = 'absolute';
+                snowflake.style.width = Math.random() * 5 + 3 + 'px';
+                snowflake.style.height = snowflake.style.width;
+                snowflake.style.backgroundColor = 'white';
+                snowflake.style.borderRadius = '50%';
                 snowflake.style.opacity = Math.random();
+                snowflake.style.left = Math.random() * 100 + 'vw';
+                snowflake.style.top = Math.random() * 100 + 'vh';
                 
-                // Random color
-                snowflake.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                const animationDuration = Math.random() * 10 + 5;
+                snowflake.style.animation = `fall ${animationDuration}s linear infinite`;
                 
-                snowContainer.appendChild(snowflake);
+                snow.appendChild(snowflake);
             }
+            
+            // Add animation style
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @keyframes fall {
+                    to {
+                        transform: translateY(100vh);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
         }
         
+        // Initialize snow effect
         createSnow();
-        
+
         // Dark Mode Toggle
         const darkModeToggle = document.getElementById('darkModeToggle');
         const body = document.body;
@@ -1685,6 +1524,7 @@
         // Currency Selector
         const currencySelector = document.getElementById('currencySelector');
         const currencyDropdown = document.getElementById('currencyDropdown');
+        let currentCurrency = localStorage.getItem('currency') || 'INR';
         
         currencySelector.addEventListener('click', () => {
             currencyDropdown.classList.toggle('show');
@@ -1697,16 +1537,16 @@
             }
         });
         
-        // Currency conversion rates (simplified)
-        const currencyRates = {
+        // Currency conversion rates (simplified for demo)
+        const conversionRates = {
             'INR': 1,
             'USD': 0.012,
             'EUR': 0.011,
-            'GBP': 0.0096,
+            'GBP': 0.0095,
             'CAD': 0.016,
             'AUD': 0.018,
             'JPY': 1.76,
-            'CNY': 0.087,
+            'CNY': 0.086,
             'AED': 0.044,
             'SAR': 0.045,
             'SGD': 0.016,
@@ -1718,51 +1558,50 @@
             'USD': '$',
             'EUR': '€',
             'GBP': '£',
-            'CAD': 'C$',
+            'CAD': 'CA$',
             'AUD': 'A$',
             'JPY': '¥',
             'CNY': '¥',
-            'AED': 'د.إ',
-            'SAR': '﷼',
+            'AED': 'AED ',
+            'SAR': 'SAR ',
             'SGD': 'S$',
-            'MYR': 'RM'
+            'MYR': 'RM '
         };
         
-        let currentCurrency = 'INR';
+        // Update prices based on selected currency
+        function updatePrices(currency) {
+            const prices = document.querySelectorAll('.original-price, .discounted-price');
+            
+            prices.forEach(priceElement => {
+                const originalText = priceElement.textContent;
+                const amount = parseFloat(originalText.replace(/[^0-9.]/g, ''));
+                
+                if (!isNaN(amount)) {
+                    const convertedAmount = (amount * conversionRates[currency]).toFixed(2);
+                    priceElement.textContent = `${currencySymbols[currency]}${convertedAmount}`;
+                }
+            });
+            
+            currentCurrency = currency;
+            localStorage.setItem('currency', currency);
+        }
         
         // Handle currency selection
         document.querySelectorAll('.currency-option').forEach(option => {
             option.addEventListener('click', () => {
-                currentCurrency = option.dataset.currency;
-                updatePrices(currentCurrency);
-                currencySelector.innerHTML = `<i class="fas fa-${currentCurrency === 'INR' ? 'rupee-sign' : 'dollar-sign'}"></i>`;
+                const currency = option.dataset.currency;
+                updatePrices(currency);
                 currencyDropdown.classList.remove('show');
             });
         });
         
-        // Update all prices on the page
-        function updatePrices(currency) {
-            const originalPrices = document.querySelectorAll('.original-price');
-            const discountedPrices = document.querySelectorAll('.discounted-price');
-            
-            originalPrices.forEach(priceEl => {
-                const inrPrice = parseFloat(priceEl.textContent.replace(/[^0-9.]/g, ''));
-                const convertedPrice = inrPrice * currencyRates[currency];
-                priceEl.textContent = `${currencySymbols[currency]}${convertedPrice.toFixed(2)}`;
-            });
-            
-            discountedPrices.forEach(priceEl => {
-                const inrPrice = parseFloat(priceEl.textContent.replace(/[^0-9.]/g, ''));
-                const convertedPrice = inrPrice * currencyRates[currency];
-                priceEl.textContent = `${currencySymbols[currency]}${convertedPrice.toFixed(2)}`;
-            });
-        }
+        // Initialize prices with saved currency
+        updatePrices(currentCurrency);
         
         // Tab functionality
         const tabBtns = document.querySelectorAll('.tab-btn');
         const youtubePackages = document.querySelector('.youtube-packages');
         const instagramPackages = document.querySelector('.instagram-packages');
-        const facebookPackages = document.querySelector('.facebook-packages');
         
         tabBtns.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -1776,15 +1615,12 @@
                 if (btn.dataset.tab === 'youtube') {
                     youtubePackages.style.display = 'block';
                     instagramPackages.style.display = 'none';
-                    facebookPackages.style.display = 'none';
                 } else if (btn.dataset.tab === 'instagram') {
                     youtubePackages.style.display = 'none';
                     instagramPackages.style.display = 'block';
-                    facebookPackages.style.display = 'none';
                 } else {
                     youtubePackages.style.display = 'none';
                     instagramPackages.style.display = 'none';
-                    facebookPackages.style.display = 'block';
                 }
             });
         });
@@ -1812,241 +1648,306 @@
             }
         });
         
-        // Auth Modals
+        // Auth Modal Handling
+        const loginBtn = document.getElementById('loginBtn');
+        const signupBtn = document.getElementById('signupBtn');
         const loginModal = document.getElementById('loginModal');
         const signupModal = document.getElementById('signupModal');
         const forgotPasswordModal = document.getElementById('forgotPasswordModal');
-        const paymentModal = document.getElementById('paymentModal');
-        
-        const loginBtn = document.getElementById('loginBtn');
-        const signupBtn = document.getElementById('signupBtn');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const userEmail = document.getElementById('userEmail');
-        
         const closeLoginModal = document.getElementById('closeLoginModal');
         const closeSignupModal = document.getElementById('closeSignupModal');
         const closeForgotPasswordModal = document.getElementById('closeForgotPasswordModal');
-        const closePaymentModal = document.getElementById('closePaymentModal');
-        
         const forgotPassword = document.getElementById('forgotPassword');
         
-        // Show modals
         loginBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            loginModal.classList.add('show');
+            loginModal.style.display = 'flex';
         });
         
         signupBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            signupModal.classList.add('show');
+            signupModal.style.display = 'flex';
+        });
+        
+        closeLoginModal.addEventListener('click', () => {
+            loginModal.style.display = 'none';
+        });
+        
+        closeSignupModal.addEventListener('click', () => {
+            signupModal.style.display = 'none';
+        });
+        
+        closeForgotPasswordModal.addEventListener('click', () => {
+            forgotPasswordModal.style.display = 'none';
         });
         
         forgotPassword.addEventListener('click', (e) => {
             e.preventDefault();
-            loginModal.classList.remove('show');
-            forgotPasswordModal.classList.add('show');
-        });
-        
-        // Close modals
-        closeLoginModal.addEventListener('click', () => {
-            loginModal.classList.remove('show');
-        });
-        
-        closeSignupModal.addEventListener('click', () => {
-            signupModal.classList.remove('show');
-        });
-        
-        closeForgotPasswordModal.addEventListener('click', () => {
-            forgotPasswordModal.classList.remove('show');
-        });
-        
-        closePaymentModal.addEventListener('click', () => {
-            paymentModal.classList.remove('show');
+            loginModal.style.display = 'none';
+            forgotPasswordModal.style.display = 'flex';
         });
         
         // Close modals when clicking outside
         window.addEventListener('click', (e) => {
             if (e.target === loginModal) {
-                loginModal.classList.remove('show');
+                loginModal.style.display = 'none';
             }
             if (e.target === signupModal) {
-                signupModal.classList.remove('show');
+                signupModal.style.display = 'none';
             }
             if (e.target === forgotPasswordModal) {
-                forgotPasswordModal.classList.remove('show');
+                forgotPasswordModal.style.display = 'none';
             }
             if (e.target === paymentModal) {
-                paymentModal.classList.remove('show');
+                paymentModal.style.display = 'none';
             }
         });
         
-        // Check if user is logged in
-        function checkAuth() {
-            const token = localStorage.getItem('token');
-            const email = localStorage.getItem('email');
-            
-            if (token && email) {
-                loginBtn.style.display = 'none';
-                signupBtn.style.display = 'none';
-                logoutBtn.style.display = 'inline-block';
-                userEmail.style.display = 'inline-block';
-                userEmail.textContent = email;
-            } else {
-                loginBtn.style.display = 'inline-block';
-                signupBtn.style.display = 'inline-block';
-                logoutBtn.style.display = 'none';
-                userEmail.style.display = 'none';
-            }
-        }
-        
-        // Logout
-        logoutBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            localStorage.removeItem('token');
-            localStorage.removeItem('email');
-            checkAuth();
-        });
-        
-        // Login form
+        // Form Submissions (simplified for demo)
         const loginForm = document.getElementById('loginForm');
-        const loginError = document.getElementById('loginError');
+        const signupForm = document.getElementById('signupForm');
+        const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+        const userEmail = document.getElementById('userEmail');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const adminBtn = document.getElementById('adminBtn');
         
-        loginForm.addEventListener('submit', async (e) => {
+        loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
             
-            try {
-                // Simulate API call
-                // In a real app, you would call your backend API here
-                await new Promise(resolve => setTimeout(resolve, 1000));
+            // Simulate login (in a real app, this would be an API call)
+            if (email && password) {
+                localStorage.setItem('userEmail', email);
+                localStorage.setItem('isLoggedIn', 'true');
                 
-                // For demo purposes, we'll just check if email contains '@' and password is at least 6 chars
-                if (!email.includes('@') || password.length < 6) {
-                    throw new Error('Invalid email or password');
+                // Check if admin (simplified for demo)
+                if (email === 'admin@yoursmmexpert.com') {
+                    localStorage.setItem('isAdmin', 'true');
+                    adminBtn.style.display = 'inline-block';
                 }
                 
-                // Simulate successful login
-                localStorage.setItem('token', 'demo-token-123');
-                localStorage.setItem('email', email);
-                
-                loginError.textContent = '';
-                loginModal.classList.remove('show');
-                checkAuth();
-            } catch (error) {
-                loginError.textContent = error.message;
+                updateAuthUI();
+                loginModal.style.display = 'none';
+                alert('Login successful!');
+            } else {
+                alert('Please enter both email and password');
             }
         });
         
-        // Signup form
-        const signupForm = document.getElementById('signupForm');
-        const signupError = document.getElementById('signupError');
-        
-        signupForm.addEventListener('submit', async (e) => {
+        signupForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            
             const name = document.getElementById('signupName').value;
             const email = document.getElementById('signupEmail').value;
             const password = document.getElementById('signupPassword').value;
             const confirmPassword = document.getElementById('signupConfirmPassword').value;
             
-            try {
-                if (password !== confirmPassword) {
-                    throw new Error('Passwords do not match');
-                }
-                
-                if (password.length < 6) {
-                    throw new Error('Password must be at least 6 characters');
-                }
-                
-                if (!email.includes('@')) {
-                    throw new Error('Invalid email address');
-                }
-                
-                // Simulate API call
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                
-                // Simulate successful signup
-                localStorage.setItem('token', 'demo-token-123');
-                localStorage.setItem('email', email);
-                
-                signupError.textContent = '';
-                signupModal.classList.remove('show');
-                checkAuth();
-            } catch (error) {
-                signupError.textContent = error.message;
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
             }
+            
+            // Simulate signup (in a real app, this would be an API call)
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('isLoggedIn', 'true');
+            updateAuthUI();
+            signupModal.style.display = 'none';
+            alert('Signup successful! You are now logged in.');
         });
         
-        // Forgot password form
-        const forgotPasswordForm = document.getElementById('forgotPasswordForm');
-        const forgotPasswordError = document.getElementById('forgotPasswordError');
-        
-        forgotPasswordForm.addEventListener('submit', async (e) => {
+        forgotPasswordForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            const email = document.getElementById('forgotEmail').value;
             
-            const email = document.getElementById('forgotPasswordEmail').value;
-            
-            try {
-                if (!email.includes('@')) {
-                    throw new Error('Invalid email address');
-                }
-                
-                // Simulate API call
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                
-                forgotPasswordError.textContent = 'Password reset link sent to your email!';
-                
-                setTimeout(() => {
-                    forgotPasswordModal.classList.remove('show');
-                    forgotPasswordError.textContent = '';
-                }, 2000);
-            } catch (error) {
-                forgotPasswordError.textContent = error.message;
-            }
+            // Simulate password reset (in a real app, this would be an API call)
+            forgotPasswordModal.style.display = 'none';
+            alert(`Password reset link sent to ${email}`);
         });
         
-        // Order buttons
-        const orderButtons = document.querySelectorAll('.order-btn');
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('isAdmin');
+            updateAuthUI();
+            alert('Logged out successfully!');
+        });
         
-        orderButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.preventDefault();
+        adminBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Redirecting to admin panel...');
+            // In a real app, this would redirect to the admin panel
+        });
+        
+        function updateAuthUI() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const email = localStorage.getItem('userEmail');
+            const isAdmin = localStorage.getItem('isAdmin') === 'true';
+            
+            if (isLoggedIn) {
+                loginBtn.style.display = 'none';
+                signupBtn.style.display = 'none';
+                userEmail.textContent = email;
+                userEmail.style.display = 'inline-block';
+                logoutBtn.style.display = 'inline-block';
                 
-                const packageName = button.dataset.package;
-                const packagePrice = button.dataset.price;
-                
-                // Check if user is logged in
-                const token = localStorage.getItem('token');
-                
-                if (!token) {
-                    loginModal.classList.add('show');
-                    return;
+                if (isAdmin) {
+                    adminBtn.style.display = 'inline-block';
+                } else {
+                    adminBtn.style.display = 'none';
                 }
+            } else {
+                loginBtn.style.display = 'inline-block';
+                signupBtn.style.display = 'inline-block';
+                userEmail.style.display = 'none';
+                logoutBtn.style.display = 'none';
+                adminBtn.style.display = 'none';
+            }
+        }
+        
+        // Initialize auth UI
+        updateAuthUI();
+        
+        // Payment Modal
+        const paymentModal = document.getElementById('paymentModal');
+        const closePaymentModal = document.getElementById('closePaymentModal');
+        const orderBtns = document.querySelectorAll('.order-btn');
+        
+        orderBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const packageName = btn.dataset.package;
+                const packagePrice = btn.dataset.price;
                 
-                // Show payment modal
-                paymentModal.classList.add('show');
+                // In a real app, you would store this info and use it in the payment process
+                localStorage.setItem('selectedPackage', packageName);
+                localStorage.setItem('selectedPrice', packagePrice);
                 
-                // In a real app, you would handle the payment here
-                // For demo, we'll just log the order
-                console.log(`Ordering: ${packageName} for ${packagePrice}`);
+                paymentModal.style.display = 'flex';
             });
         });
         
-        // Payment options
-        const paymentOptions = document.querySelectorAll('.payment-option');
+        closePaymentModal.addEventListener('click', () => {
+            paymentModal.style.display = 'none';
+        });
         
-        paymentOptions.forEach(option => {
+        // Handle payment method selection
+        document.querySelectorAll('.payment-option').forEach(option => {
             option.addEventListener('click', () => {
                 const method = option.dataset.method;
-                alert(`Redirecting to ${method} payment...`);
-                paymentModal.classList.remove('show');
+                const packageName = localStorage.getItem('selectedPackage');
+                const packagePrice = localStorage.getItem('selectedPrice');
+                
+                paymentModal.style.display = 'none';
+                
+                // In a real app, this would redirect to the payment gateway
+                alert(`Redirecting to ${method} payment for ${packageName} (${currencySymbols[currentCurrency]}${packagePrice})`);
             });
         });
+    </script>
+    
+    <!-- Backend API Simulation -->
+    <script>
+        // This would be replaced with actual API calls in a production environment
+        // For demo purposes, we're using localStorage to simulate a backend
         
-        // Initialize
-        checkAuth();
+        // Simulate database tables
+        if (!localStorage.getItem('users')) {
+            localStorage.setItem('users', JSON.stringify([
+                { id: 1, name: 'Admin', email: 'admin@yoursmmexpert.com', password: 'admin123', isAdmin: true },
+                { id: 2, name: 'Test User', email: 'test@example.com', password: 'test123', isAdmin: false }
+            ]));
+        }
+        
+        if (!localStorage.getItem('orders')) {
+            localStorage.setItem('orders', JSON.stringify([]));
+        }
+        
+        if (!localStorage.getItem('packages')) {
+            localStorage.setItem('packages', JSON.stringify([
+                { id: 1, name: 'Beginners Package', category: 'youtube', price: 99, features: [] },
+                { id: 2, name: '1K Subscribers Package', category: 'youtube', price: 999, features: [] },
+                // Add all other packages here
+            ]));
+        }
+        
+        // API Simulation Functions
+        window.YourSMMExpertAPI = {
+            login: function(email, password) {
+                const users = JSON.parse(localStorage.getItem('users'));
+                const user = users.find(u => u.email === email && u.password === password);
+                
+                if (user) {
+                    return { success: true, user };
+                } else {
+                    return { success: false, message: 'Invalid email or password' };
+                }
+            },
+            
+            signup: function(name, email, password) {
+                const users = JSON.parse(localStorage.getItem('users'));
+                
+                if (users.some(u => u.email === email)) {
+                    return { success: false, message: 'Email already exists' };
+                }
+                
+                const newUser = {
+                    id: users.length + 1,
+                    name,
+                    email,
+                    password,
+                    isAdmin: false
+                };
+                
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                return { success: true, user: newUser };
+            },
+            
+            createOrder: function(userId, packageId, paymentMethod) {
+                const orders = JSON.parse(localStorage.getItem('orders'));
+                const newOrder = {
+                    id: orders.length + 1,
+                    userId,
+                    packageId,
+                    paymentMethod,
+                    status: 'pending',
+                    createdAt: new Date().toISOString()
+                };
+                
+                orders.push(newOrder);
+                localStorage.setItem('orders', JSON.stringify(orders));
+                
+                return { success: true, order: newOrder };
+            },
+            
+            getPackages: function() {
+                return JSON.parse(localStorage.getItem('packages'));
+            },
+            
+            getOrders: function(userId) {
+                const orders = JSON.parse(localStorage.getItem('orders'));
+                return orders.filter(o => o.userId === userId);
+            },
+            
+            // Admin functions
+            getAllOrders: function() {
+                return JSON.parse(localStorage.getItem('orders'));
+            },
+            
+            updateOrderStatus: function(orderId, status) {
+                const orders = JSON.parse(localStorage.getItem('orders'));
+                const order = orders.find(o => o.id === orderId);
+                
+                if (order) {
+                    order.status = status;
+                    localStorage.setItem('orders', JSON.stringify(orders));
+                    return { success: true, order };
+                } else {
+                    return { success: false, message: 'Order not found' };
+                }
+            }
+        };
     </script>
 </body>
 </html>
